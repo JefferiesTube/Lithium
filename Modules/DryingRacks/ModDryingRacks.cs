@@ -3,8 +3,6 @@
     public class ModDryingRacksConfiguration : ModuleConfiguration
     {
         public override string Name => "DryingRacks";
-        public bool Enabled { get; set; } = false;
-
         public int DryTimePerQuality = 720;
     }
 

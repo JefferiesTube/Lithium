@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using Il2CppScheduleOne.ItemFramework;
 using Il2CppScheduleOne.ObjectScripts;
-using Lithium.Modules.PlantGrowth;
 
 namespace Lithium.Modules.DryingRacks.Patches
 {

@@ -8,8 +8,6 @@ namespace Lithium.Modules.PropertyPrices
     public class ModPropertyPricesConfiguration : ModuleConfiguration
     {
         public override string Name => "Property Prices";
-        public bool Enabled { get; set; } = false;
-
         public Dictionary<string, int> PropertyPrices { get; set; } = new Dictionary<string, int>
         {
             { "RV", 0 },

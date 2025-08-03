@@ -18,12 +18,10 @@ namespace Lithium
             new ModPropertyPrices(),
             new ModPlants(),
             new ModDryingRacks(),
+            new ModCustomers(),
         ];
 
-        public static T Get<T>() where T : ModuleBase
-        {
-            return Modules.OfType<T>().FirstOrDefault();
-        }
+        public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();
 
         public override void OnInitializeMelon()
         {
@@ -40,17 +38,16 @@ namespace Lithium
             {
                 foreach (ModuleBase module in Modules)
                 {
-                    LoggerInstance.Msg($"[Lithium] Loading {module.GetType().Name}");
+                    LoggerInstance.Msg($"Loading {module.GetType().Name}");
                     module.Load();
                     module.Apply();
                 }
                 
-                MoneyManager.Instance.onlineBalance = 100000;
                 _isFirstStart = false;
             }
             else if (sceneName.Equals("Menu", StringComparison.OrdinalIgnoreCase) && !_isFirstStart)
             {
-                _isFirstStart = false;
+                _isFirstStart = true;
             }
         }
     }

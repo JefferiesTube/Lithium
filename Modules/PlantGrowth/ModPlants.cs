@@ -20,7 +20,6 @@ namespace Lithium.Modules.PlantGrowth
     public class ModPlantsConfiguration : ModuleConfiguration
     {
         public override string Name => "Plants";
-        public bool Enabled { get; set; } = false;
 
         public float GrowthModifier = 1f;
         public float WaterDrainModifier = 1f;
