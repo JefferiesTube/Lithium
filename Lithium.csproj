@@ -482,7 +482,6 @@
 		<Compile Include="Modules\ModPropertyPrices.cs" />
 		<Compile Include="Modules\ModuleBase.cs" />
 		<Compile Include="Modules\ModuleConfiguration.cs" />
-		<Compile Include="Overrides\OverrideBase.cs" />
 	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
