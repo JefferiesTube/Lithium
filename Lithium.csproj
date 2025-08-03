@@ -479,9 +479,21 @@
 
 	<ItemGroup>
 		<Compile Include="Core.cs" />
-		<Compile Include="Modules\ModPropertyPrices.cs" />
+		<Compile Include="Modules\DryingRacks\Patches\DryingRackPatch.cs" />
+		<Compile Include="Modules\DryingRacks\Patches\DryingOperationUIPatch.cs" />
+		<Compile Include="Modules\DryingRacks\Patches\DryingOperationPatch.cs" />
+		<Compile Include="Modules\PlantGrowth\ModPlants.cs" />
+		<Compile Include="Modules\DryingRacks\ModDryingRacks.cs" />
+		<Compile Include="Modules\PlantGrowth\Patches\BotanistPatch.cs" />
+		<Compile Include="Modules\PlantGrowth\Patches\PlantGrowthDonePatch.cs" />
+		<Compile Include="Modules\PlantGrowth\Patches\PlantHarvestablePatch.cs" />
+		<Compile Include="Modules\PlantGrowth\PlantModified.cs" />
+		<Compile Include="Modules\PlantGrowth\Patches\PotPatch.cs" />
+		<Compile Include="Modules\PlantGrowth\PotBaseValues.cs" />
+		<Compile Include="Modules\PropertyPrices\ModPropertyPrices.cs" />
 		<Compile Include="Modules\ModuleBase.cs" />
 		<Compile Include="Modules\ModuleConfiguration.cs" />
+		<Compile Include="Util\WeightedPicker.cs" />
 	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">

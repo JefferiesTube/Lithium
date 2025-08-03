@@ -9,15 +9,18 @@
     public abstract class ModuleBase<TConfiguration> : ModuleBase
         where TConfiguration : ModuleConfiguration
     {
-        protected TConfiguration Configuration { get; private set; }
+        public TConfiguration Configuration { get; private set; }
         protected ModuleBase()
         {
 
         }
 
+        protected virtual void OnBeforeConfigurationLoaded() {}
+
         public override void Load()
         {
             Configuration = Activator.CreateInstance<TConfiguration>();
+            OnBeforeConfigurationLoaded();
             Configuration.LoadConfiguration();
         }
     }

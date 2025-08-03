@@ -1,5 +1,8 @@
 ﻿using Il2CppScheduleOne.Money;
 using Lithium.Modules;
+using Lithium.Modules.DryingRacks;
+using Lithium.Modules.PlantGrowth;
+using Lithium.Modules.PropertyPrices;
 using MelonLoader;
 
 
@@ -10,13 +13,22 @@ namespace Lithium
 {
     public class Core : MelonMod
     {
-        private readonly List<ModuleBase> _modules = 
+        public static readonly List<ModuleBase> Modules = 
         [
-            new ModPropertyPrices()
+            new ModPropertyPrices(),
+            new ModPlants(),
+            new ModDryingRacks(),
         ];
+
+        public static T Get<T>() where T : ModuleBase
+        {
+            return Modules.OfType<T>().FirstOrDefault();
+        }
 
         public override void OnInitializeMelon()
         {
+            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("com.lithium");
+            harmony.PatchAll();
             LoggerInstance.Msg("Lithium initialized");
         }
 
@@ -26,7 +38,7 @@ namespace Lithium
         {
             if (sceneName == "Main")
             {
-                foreach (ModuleBase module in _modules)
+                foreach (ModuleBase module in Modules)
                 {
                     LoggerInstance.Msg($"[Lithium] Loading {module.GetType().Name}");
                     module.Load();
