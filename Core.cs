@@ -1,8 +1,8 @@
-﻿using Il2CppScheduleOne.Money;
-using Lithium.Modules;
+﻿using Lithium.Modules;
 using Lithium.Modules.DryingRacks;
 using Lithium.Modules.PlantGrowth;
 using Lithium.Modules.PropertyPrices;
+using Lithium.Modules.StackSizes;
 using MelonLoader;
 
 
@@ -19,6 +19,7 @@ namespace Lithium
             new ModPlants(),
             new ModDryingRacks(),
             new ModCustomers(),
+            new ModStackSizes(),
         ];
 
         public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();
@@ -27,6 +28,13 @@ namespace Lithium
         {
             HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("com.lithium");
             harmony.PatchAll();
+
+            foreach (ModuleBase module in Modules)
+            {
+                LoggerInstance.Msg($"Loading {module.GetType().Name}");
+                module.Load();
+            }
+
             LoggerInstance.Msg("Lithium initialized");
         }
 
@@ -39,7 +47,6 @@ namespace Lithium
                 foreach (ModuleBase module in Modules)
                 {
                     LoggerInstance.Msg($"Loading {module.GetType().Name}");
-                    module.Load();
                     module.Apply();
                 }
                 

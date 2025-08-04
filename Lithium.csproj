@@ -495,6 +495,10 @@
 		<Compile Include="Modules\PropertyPrices\ModPropertyPrices.cs" />
 		<Compile Include="Modules\ModuleBase.cs" />
 		<Compile Include="Modules\ModuleConfiguration.cs" />
+		<Compile Include="Modules\StackSizes\ModStackSizes.cs" />
+		<Compile Include="Modules\StackSizes\Patches\ItemRegistry.cs" />
+		<Compile Include="Modules\StackSizes\Patches\RegistryAddToRegistryPatch.cs" />
+		<Compile Include="Modules\StackSizes\Patches\RegistryStartPatch.cs" />
 		<Compile Include="Util\SuccessChanceCalculator.cs" />
 		<Compile Include="Util\WeightedPicker.cs" />
 	</ItemGroup>
