@@ -13,13 +13,14 @@ namespace Lithium
 {
     public class Core : MelonMod
     {
-        public static readonly List<ModuleBase> Modules = 
+        public static readonly List<ModuleBase> Modules =
         [
             new ModPropertyPrices(),
-            new ModPlants(),
-            new ModDryingRacks(),
-            new ModCustomers(),
-            new ModStackSizes(),
+        new ModPlants(),
+        new ModDryingRacks(),
+        new ModCustomers(),
+        new ModStackSizes(),
+        new ModMixingStation(),
         ];
 
         public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();

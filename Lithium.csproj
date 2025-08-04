@@ -484,6 +484,7 @@
 		<Compile Include="Modules\DryingRacks\Patches\DryingRackPatch.cs" />
 		<Compile Include="Modules\DryingRacks\Patches\DryingOperationUIPatch.cs" />
 		<Compile Include="Modules\DryingRacks\Patches\DryingOperationPatch.cs" />
+		<Compile Include="Modules\MixingStation\ModMixingStation.cs" />
 		<Compile Include="Modules\PlantGrowth\ModPlants.cs" />
 		<Compile Include="Modules\DryingRacks\ModDryingRacks.cs" />
 		<Compile Include="Modules\PlantGrowth\Patches\BotanistPatch.cs" />
