@@ -25,6 +25,9 @@ namespace Lithium.Modules.StackSizes
 
         public Dictionary<string, int> ItemOverrides { get; set; } = [];
         public List<string> IgnoredItems { get; set; } = [];
+
+        public int MixingStation { get; set; } = 20;
+        public int DryingRack { get; set; } = 20;
     }
 
     public class ModStackSizes : ModuleBase<ModStackSizesConfiguration>

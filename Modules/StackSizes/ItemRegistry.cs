@@ -1,7 +1,7 @@
 ﻿using Il2CppScheduleOne.ItemFramework;
 using MelonLoader;
 
-namespace Lithium.Modules.StackSizes.Patches
+namespace Lithium.Modules.StackSizes
 {
     public static class ItemRegistry
     {

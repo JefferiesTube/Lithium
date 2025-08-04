@@ -496,7 +496,10 @@
 		<Compile Include="Modules\ModuleBase.cs" />
 		<Compile Include="Modules\ModuleConfiguration.cs" />
 		<Compile Include="Modules\StackSizes\ModStackSizes.cs" />
-		<Compile Include="Modules\StackSizes\Patches\ItemRegistry.cs" />
+		<Compile Include="Modules\StackSizes\Patches\CashDragPatch.cs" />
+		<Compile Include="Modules\StackSizes\Patches\DryingRackCapacityPatch.cs" />
+		<Compile Include="Modules\StackSizes\Patches\MixingStationCapacityPatch.cs" />
+		<Compile Include="Modules\StackSizes\ItemRegistry.cs" />
 		<Compile Include="Modules\StackSizes\Patches\RegistryAddToRegistryPatch.cs" />
 		<Compile Include="Modules\StackSizes\Patches\RegistryStartPatch.cs" />
 		<Compile Include="Util\SuccessChanceCalculator.cs" />
