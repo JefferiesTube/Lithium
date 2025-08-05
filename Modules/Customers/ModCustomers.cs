@@ -3,7 +3,6 @@
     public class ModCustomersConfiguration : ModuleConfiguration
     {
         public override string Name => "Customers";
-        public bool Enabled { get; set; } = false;
     }
 
     public class ModCustomers : ModuleBase<ModCustomersConfiguration>

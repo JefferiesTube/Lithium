@@ -1,4 +1,5 @@
 ﻿using Il2CppInterop.Runtime.Injection;
+using Lithium.Modules.PlantGrowth.Behaviours;
 using Lithium.Util;
 using Newtonsoft.Json;
 
@@ -38,6 +39,7 @@ namespace Lithium.Modules.PlantGrowth
         public ModPlants()
         {
             ClassInjector.RegisterTypeInIl2Cpp<PlantModified>();
+            ClassInjector.RegisterTypeInIl2Cpp<PlantBaseQuality>();
             ClassInjector.RegisterTypeInIl2Cpp<PotBaseValues>();
         }
 
