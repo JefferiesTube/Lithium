@@ -9,6 +9,10 @@ namespace Lithium.Modules.StackSizes.Patches
         [HarmonyPostfix]
         public static void RegistryStart(Registry __instance)
         {
+            ModStackSizesConfiguration config = Core.Get<ModStackSizes>().Configuration;
+            if (!config.Enabled)
+                return;
+
             List<Registry.ItemRegister> itemRegistry = new List<Registry.ItemRegister>();
             foreach (Registry.ItemRegister register in __instance.ItemRegistry)
             {

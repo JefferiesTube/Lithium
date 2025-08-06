@@ -1,4 +1,5 @@
 ﻿using Il2CppInterop.Runtime.Injection;
+using Lithium.Modules.PlantGrowth.Behaviours;
 using Lithium.Util;
 using Newtonsoft.Json;
 
@@ -29,7 +30,7 @@ namespace Lithium.Modules.PlantGrowth
         public List<WeightedFloat> RandomQualityModifiers = [new(1, 0)];
 
         [JsonIgnore] public WeightedPicker<float> RandomYieldPerBudPicker;
-        [JsonIgnore] public WeightedPicker<float> RandomYieldModifierPicker;
+        [JsonIgnore] public WeightedNormalizer RandomYieldModifierPicker;
         [JsonIgnore] public WeightedPicker<float> RandomYieldQualityPicker;
     }
 
@@ -38,6 +39,7 @@ namespace Lithium.Modules.PlantGrowth
         public ModPlants()
         {
             ClassInjector.RegisterTypeInIl2Cpp<PlantModified>();
+            ClassInjector.RegisterTypeInIl2Cpp<PlantBaseQuality>();
             ClassInjector.RegisterTypeInIl2Cpp<PotBaseValues>();
         }
 

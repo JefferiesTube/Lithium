@@ -1,9 +1,13 @@
 ﻿using Lithium.Modules;
+using Lithium.Modules.Customers;
 using Lithium.Modules.DryingRacks;
+using Lithium.Modules.LabOven;
 using Lithium.Modules.PlantGrowth;
 using Lithium.Modules.PropertyPrices;
 using Lithium.Modules.StackSizes;
+using Lithium.Modules.TrashGrabber;
 using MelonLoader;
+using UnityEngine;
 
 
 [assembly: MelonInfo(typeof(Lithium.Core), "Lithium", "1.0.0", "DerTomDer & YukiSora", null)]
@@ -13,14 +17,15 @@ namespace Lithium
 {
     public class Core : MelonMod
     {
-        public static readonly List<ModuleBase> Modules =
+        public static readonly List<ModuleBase> Modules = 
         [
             new ModPropertyPrices(),
-        new ModPlants(),
-        new ModDryingRacks(),
-        new ModCustomers(),
-        new ModStackSizes(),
-        new ModMixingStation(),
+            new ModPlants(),
+            new ModDryingRacks(),
+            new ModCustomers(),
+            new ModStackSizes(),
+            new ModLabOven(),
+            new ModTrashGrabber()
         ];
 
         public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();
@@ -58,5 +63,27 @@ namespace Lithium
                 _isFirstStart = true;
             }
         }
+
+        //public static Sprite FindSprite(string spriteName)
+        //{
+        //    try
+        //    {
+        //        foreach (Sprite sprite in Resources.FindObjectsOfTypeAll<Sprite>())
+        //        {
+        //            if (sprite.name == spriteName)
+        //            {
+        //                Logger.Debug($"Found sprite '{spriteName}' directly in loaded objects");
+        //                return sprite;
+        //            }
+        //        }
+
+        //        return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Logger.Error($"Error finding sprite '{spriteName}': {ex.Message}");
+        //        return null;
+        //    }
+        //}
     }
 }

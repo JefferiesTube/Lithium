@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2CppScheduleOne.Growing;
+using Lithium.Modules.PlantGrowth.Behaviours;
 
 namespace Lithium.Modules.PlantGrowth.Patches
 {
@@ -19,7 +20,7 @@ namespace Lithium.Modules.PlantGrowth.Patches
                 return;
 
             __instance.gameObject.AddComponent<PlantModified>();
-            __instance.YieldLevel *= configuration.RandomYieldModifierPicker.Pick();
+            __instance.YieldLevel *= configuration.RandomYieldModifierPicker.Evaluate(UnityEngine.Random.value);
         }
     }
 }

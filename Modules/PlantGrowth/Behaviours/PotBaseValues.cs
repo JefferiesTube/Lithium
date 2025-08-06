@@ -1,7 +1,7 @@
 ﻿using Il2CppScheduleOne.ObjectScripts;
 using UnityEngine;
 
-namespace Lithium.Modules.PlantGrowth
+namespace Lithium.Modules.PlantGrowth.Behaviours
 {
     public class PotBaseValues : MonoBehaviour
     {

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2CppScheduleOne.ObjectScripts;
+using Lithium.Modules.PlantGrowth.Behaviours;
 
 namespace Lithium.Modules.PlantGrowth.Patches
 {

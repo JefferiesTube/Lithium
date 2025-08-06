@@ -1,6 +1,11 @@
-﻿using System.Globalization;
+﻿using HarmonyLib;
 using Il2CppScheduleOne.Growing;
-using HarmonyLib;
+using Il2CppScheduleOne.UI;
+using System.Globalization;
+using Il2CppScheduleOne.ItemFramework;
+using Lithium.Modules.PlantGrowth.Behaviours;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Lithium.Modules.PlantGrowth.Patches
 {
@@ -15,8 +20,14 @@ namespace Lithium.Modules.PlantGrowth.Patches
                 return;
 
             Plant componentInParent = __instance.GetComponentInParent<Plant>();
-            __instance.name = componentInParent.QualityLevel.ToString(CultureInfo.InvariantCulture);
-            componentInParent.QualityLevel += configuration.RandomYieldQualityPicker.Pick();
+            if (!componentInParent.TryGetComponent(out PlantBaseQuality comp))
+            {
+                PlantBaseQuality pbq = componentInParent.gameObject.AddComponent<PlantBaseQuality>();
+                pbq.Quality = componentInParent.QualityLevel;
+                pbq.NeedsNotification = true;
+            }
+
+            componentInParent.QualityLevel +=  configuration.RandomYieldQualityPicker.Pick();
             __instance.ProductQuantity = (int) configuration.RandomYieldPerBudPicker.Pick();
         }
 
@@ -27,8 +38,16 @@ namespace Lithium.Modules.PlantGrowth.Patches
             if (!configuration.Enabled)
                 return;
             Plant componentInParent = __instance.GetComponentInParent<Plant>();
-            if(float.TryParse(__instance.name, NumberStyles.AllowDecimalPoint, new CultureInfo("en-US"), out float result))
-                componentInParent.QualityLevel = result;
+            if (componentInParent.TryGetComponent(out PlantBaseQuality comp) && comp.NeedsNotification)
+            {
+                EQuality quality = ItemQuality.GetQuality(componentInParent.QualityLevel);
+
+                NotificationsManager.Instance.SendNotification($"{__instance.ProductQuantity}x {componentInParent.SeedDefinition.Name}",
+                    $"{quality:G} quality", componentInParent.SeedDefinition.Icon, 2f, false);
+                componentInParent.QualityLevel = comp.Quality;
+                comp.NeedsNotification = false;
+                Object.Destroy(comp);
+            }
         }
     }
 }

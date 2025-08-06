@@ -17,6 +17,10 @@ namespace Lithium.Modules.Customers.Patches
         static bool Prefix(Customer __instance, Il2CppSystem.Collections.Generic.List<ItemInstance> items,
             float price, ref float __result)
         {
+            ModCustomersConfiguration config = Core.Get<ModCustomers>().Configuration;
+            if (!config.Enabled)
+                return true;
+
             float sum = 0;
             
             foreach (ItemInstance item in items)
