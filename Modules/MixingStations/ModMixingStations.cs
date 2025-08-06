@@ -1,12 +1,13 @@
-﻿namespace Lithium.Modules.MixingStation
+﻿namespace Lithium.Modules.MixingStations
 {
-    public class ModMixingStationConfiguration : ModuleConfiguration
+    public class ModMixingStationsConfiguration : ModuleConfiguration
     {
         public override string Name => "MixingStation";
         public int InputCapacity { get; set; } = 20;
+        public float SpeedFactor { get; set; } = 1;
     }
 
-    public class ModMixingStation : ModuleBase<ModMixingStationConfiguration>
+    public class ModMixingStations : ModuleBase<ModMixingStationsConfiguration>
     {
         public override void Apply()
         {

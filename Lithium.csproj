@@ -488,7 +488,8 @@
 		<Compile Include="Modules\DryingRacks\Patches\DryingRackPatch.cs" />
 		<Compile Include="Modules\DryingRacks\Patches\DryingOperationUIPatch.cs" />
 		<Compile Include="Modules\DryingRacks\Patches\DryingOperationPatch.cs" />
-		<Compile Include="Modules\MixingStation\ModMixingStation.cs" />
+		<Compile Include="Modules\MixingStations\ModMixingStations.cs" />
+		<Compile Include="Modules\MixingStations\Patches\MixingStationSpeedPatch.cs" />
 		<Compile Include="Modules\PlantGrowth\ModPlants.cs" />
 		<Compile Include="Modules\DryingRacks\ModDryingRacks.cs" />
 		<Compile Include="Modules\PlantGrowth\Patches\BotanistPatch.cs" />
@@ -503,7 +504,7 @@
 		<Compile Include="Modules\StackSizes\ModStackSizes.cs" />
 		<Compile Include="Modules\StackSizes\Patches\CashDragPatch.cs" />
 		<Compile Include="Modules\StackSizes\Patches\DryingRackCapacityPatch.cs" />
-		<Compile Include="Modules\StackSizes\Patches\MixingStationCapacityPatch.cs" />
+		<Compile Include="Modules\MixingStations\Patches\MixingStationCapacityPatch.cs" />
 		<Compile Include="Modules\StackSizes\ItemRegistry.cs" />
 		<Compile Include="Modules\StackSizes\Patches\RegistryAddToRegistryPatch.cs" />
 		<Compile Include="Modules\StackSizes\Patches\RegistryStartPatch.cs" />
