@@ -483,7 +483,13 @@
 
 	<ItemGroup>
 		<Compile Include="Core.cs" />
+		<Compile Include="Helper\CollectionConverter.cs" />
+		<Compile Include="Helper\ProductHelper.cs" />
+		<Compile Include="Helper\StringExtensions.cs" />
+		<Compile Include="Modules\Customers\Behaviours\CustomerNotificationState.cs" />
 		<Compile Include="Modules\Customers\ModCustomers.cs" />
+		<Compile Include="Modules\Customers\Patches\CustomerContractGenerationPatch.cs" />
+		<Compile Include="Modules\Customers\Patches\CustomerShouldTryGenerateDealPatch.cs" />
 		<Compile Include="Modules\Customers\Patches\CustomerSampleConsumedPatch.cs" />
 		<Compile Include="Modules\DryingRacks\Patches\DryingRackPatch.cs" />
 		<Compile Include="Modules\DryingRacks\Patches\DryingOperationUIPatch.cs" />

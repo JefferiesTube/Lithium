@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Lithium.Modules.PlantGrowth
+namespace Lithium.Modules.PlantGrowth.Behaviours
 {
     public class PlantBaseQuality : MonoBehaviour
     {
