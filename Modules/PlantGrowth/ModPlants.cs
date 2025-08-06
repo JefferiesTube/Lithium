@@ -30,7 +30,7 @@ namespace Lithium.Modules.PlantGrowth
         public List<WeightedFloat> RandomQualityModifiers = [new(1, 0)];
 
         [JsonIgnore] public WeightedPicker<float> RandomYieldPerBudPicker;
-        [JsonIgnore] public WeightedPicker<float> RandomYieldModifierPicker;
+        [JsonIgnore] public WeightedNormalizer RandomYieldModifierPicker;
         [JsonIgnore] public WeightedPicker<float> RandomYieldQualityPicker;
     }
 

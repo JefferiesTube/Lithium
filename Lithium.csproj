@@ -489,11 +489,13 @@
 		<Compile Include="Modules\Customers\Behaviours\CustomerNotificationState.cs" />
 		<Compile Include="Modules\Customers\ModCustomers.cs" />
 		<Compile Include="Modules\Customers\Patches\CustomerContractGenerationPatch.cs" />
-		<Compile Include="Modules\Customers\Patches\CustomerShouldTryGenerateDealPatch.cs" />
 		<Compile Include="Modules\Customers\Patches\CustomerSampleConsumedPatch.cs" />
 		<Compile Include="Modules\DryingRacks\Patches\DryingRackPatch.cs" />
 		<Compile Include="Modules\DryingRacks\Patches\DryingOperationUIPatch.cs" />
 		<Compile Include="Modules\DryingRacks\Patches\DryingOperationPatch.cs" />
+		<Compile Include="Modules\LabOven\ModLabOven.cs" />
+		<Compile Include="Modules\LabOven\Patches\OvenCookOperationIsReadyPatch.cs" />
+		<Compile Include="Modules\LabOven\Patches\OvenCookOperationGetCookDurationPatch.cs" />
 		<Compile Include="Modules\PlantGrowth\Behaviours\PlantBaseQuality.cs" />
 		<Compile Include="Modules\PlantGrowth\ModPlants.cs" />
 		<Compile Include="Modules\DryingRacks\ModDryingRacks.cs" />
@@ -509,11 +511,13 @@
 		<Compile Include="Modules\StackSizes\ModStackSizes.cs" />
 		<Compile Include="Modules\StackSizes\Patches\CashDragPatch.cs" />
 		<Compile Include="Modules\StackSizes\Patches\DryingRackCapacityPatch.cs" />
-		<Compile Include="Modules\StackSizes\Patches\MixingStationCapacityPatch.cs" />
 		<Compile Include="Modules\StackSizes\ItemRegistry.cs" />
 		<Compile Include="Modules\StackSizes\Patches\RegistryAddToRegistryPatch.cs" />
 		<Compile Include="Modules\StackSizes\Patches\RegistryStartPatch.cs" />
+		<Compile Include="Modules\TrashGrabber\ModTrashGrabber.cs" />
+		<Compile Include="Modules\TrashGrabber\Patches\EquippableTrashGrabberGetCapacityPatch.cs" />
 		<Compile Include="Util\SuccessChanceCalculator.cs" />
+		<Compile Include="Util\WeightedNormalizer.cs" />
 		<Compile Include="Util\WeightedPicker.cs" />
 	</ItemGroup>
 	

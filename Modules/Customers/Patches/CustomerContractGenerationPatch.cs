@@ -8,6 +8,8 @@ using Il2CppScheduleOne.Product;
 using Il2CppScheduleOne.Quests;
 using Lithium.Helper;
 using Lithium.Modules.Customers.Behaviours;
+using Lithium.Modules.TrashGrabber;
+using Lithium.Util;
 using UnityEngine;
 
 namespace Lithium.Modules.Customers.Patches
@@ -18,6 +20,10 @@ namespace Lithium.Modules.Customers.Patches
         [HarmonyPostfix]
         public static void Postfix(ref ContractInfo __result, Customer __instance, bool force = false)
         {
+            ModCustomersConfiguration config = Core.Get<ModCustomers>().Configuration;
+            if (!config.Enabled)
+                return;
+
             if (__result == null || force)
                 return;
 
@@ -25,7 +31,7 @@ namespace Lithium.Modules.Customers.Patches
             {
                 return;
             }
-
+            
             List<string> desires = __instance.CustomerData.PreferredProperties
                 .ToList()
                 .Select(p => p.Name)
@@ -40,16 +46,30 @@ namespace Lithium.Modules.Customers.Patches
             {
                 if (__instance.DealerHasSuitableProduct())
                 {
-                    List<ItemInstance> suitableItems = __instance.AssignedDealer.ItemSlots
+                    List<(ProductItemInstance instance, int matchcount)> suitableItems = __instance.AssignedDealer.ItemSlots
                         .ToList()
                         .Where(i => i.ItemInstance is ProductItemInstance { Definition: ProductDefinition pd }
                                     && ProductHelper.ProductMatchesDesires(pd, desires))
-                        .Select(i => i.ItemInstance)
-                        .OrderBy(x => UnityEngine.Random.value)
+                        .Select(i => (instance: i.ItemInstance as ProductItemInstance, 
+                            matchcount: ProductHelper.GetMatchCount((i.ItemInstance as ProductItemInstance).Definition as ProductDefinition, desires)))
                         .ToList();
 
-                    RewireOrderedProduct(__result, suitableItems[0].ID, quality,
-                        Mathf.Clamp(quantity, 1, suitableItems[0].Quantity));
+                    WeightedPicker<string> pickableItems = new();
+                    foreach (var (instance, matchcount) in suitableItems)
+                    {
+                        if (instance == null || instance.Definition == null || instance.Quantity <= 0)
+                            continue;
+
+                        // TODO: Add special patterns here, once this module gets implemented
+                        pickableItems.Add(instance.Definition.ID, matchcount);
+                    }
+
+                    id = pickableItems.Pick();
+                    quantity = suitableItems
+                        .FirstOrDefault(i => i.instance.Definition.ID == id).instance.Quantity;
+
+                    RewireOrderedProduct(__result, id, quality,
+                        Mathf.Clamp(quantity, 1, quantity));
                 }
                 else
                 {

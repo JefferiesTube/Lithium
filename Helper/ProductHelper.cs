@@ -13,11 +13,10 @@ namespace Lithium.Helper
             if (desires.Count == 0)
                 return true;
 
-            List<ProductDefinition> suitableProducts = ProductManager.DiscoveredProducts.ToList()
-                .Where(p => p.Properties.ToList().Intersect(desires).Any())
-                .ToList();
+            int suitableProducts = ProductManager.DiscoveredProducts.ToList()
+                .Count(pd => GetMatchCount(pd, desires.Select(p => p.Name).ToList()) > 0);
             
-            return suitableProducts.Count != 0 || desires.Count <= 0;
+            return suitableProducts > 0 || desires.Count <= 0;
         }
 
         public static bool DealerHasSuitableProduct(this Customer customer)
@@ -39,5 +38,11 @@ namespace Lithium.Helper
         public static bool ProductMatchesDesires(ProductDefinition pd, List<string> desires) => pd.Properties.ToList().Select(p => p.Name).Intersect(desires).Any();
 
         public static string FormatDesires(CustomerData customerData) => customerData.PreferredProperties.ToList().Select(p => p.Name).SmartJoin(", ", " or ");
+
+        public static int GetMatchCount(ProductDefinition pd, List<string> desires)
+        {
+            return ProductManager.DiscoveredProducts.ToList()
+                .Count(p => p.Properties.ToList().Select(p => p.Name).Intersect(desires).Any());
+        }
     }
 }

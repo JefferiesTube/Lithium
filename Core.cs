@@ -1,21 +1,13 @@
-﻿using Il2CppScheduleOne.Economy;
-using Il2CppScheduleOne.Map;
-using Il2CppScheduleOne.Messaging;
-using Il2CppScheduleOne.NPCs;
-using Il2CppScheduleOne.UI;
-using Il2CppSystem.Drawing;
-using Lithium.Modules;
+﻿using Lithium.Modules;
 using Lithium.Modules.Customers;
 using Lithium.Modules.DryingRacks;
+using Lithium.Modules.LabOven;
 using Lithium.Modules.PlantGrowth;
 using Lithium.Modules.PropertyPrices;
 using Lithium.Modules.StackSizes;
+using Lithium.Modules.TrashGrabber;
 using MelonLoader;
-using Unity.Jobs.LowLevel.Unsafe;
 using UnityEngine;
-using static Il2CppMono.Security.X509.X520;
-using static MelonLoader.MelonLogger;
-using Object = Il2CppSystem.Object;
 
 
 [assembly: MelonInfo(typeof(Lithium.Core), "Lithium", "1.0.0", "DerTomDer & YukiSora", null)]
@@ -32,6 +24,8 @@ namespace Lithium
             new ModDryingRacks(),
             new ModCustomers(),
             new ModStackSizes(),
+            new ModLabOven(),
+            new ModTrashGrabber()
         ];
 
         public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();
@@ -67,17 +61,6 @@ namespace Lithium
             else if (sceneName.Equals("Menu", StringComparison.OrdinalIgnoreCase) && !_isFirstStart)
             {
                 _isFirstStart = true;
-            }
-        }
-
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-            if (Input.GetKeyDown(KeyCode.F5))
-            {
-                //NPC npc = NPCManager.GetNPCsInRegion(EMapRegion.Northtown)[Index.Start].Cast<NPC>();
-                //MessagingManager.Instance.ReceiveMessage(new("Hey, I wanted to get fresh stuff from your dealer, but there is no suitable offer", Message.ESenderType.Other), true, npc.ID);
-                // NotificationsManager.Instance.SendNotification("Blubb", "Blubbidy Blugg", null, 1f);
             }
         }
 

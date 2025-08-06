@@ -12,8 +12,17 @@ namespace Lithium.Modules.StackSizes.Patches
         [HarmonyTranspiler]
         public static IEnumerable<CodeInstruction> TranspilerPatch(IEnumerable<CodeInstruction> instructions)
         {
+            ModStackSizesConfiguration configuration = Core.Get<ModStackSizes>().Configuration;
+           
+
             foreach (CodeInstruction instruction in instructions)
             {
+                if (!configuration.Enabled)
+                {
+                    yield return instruction;
+                    continue;
+                }
+
                 if (instruction.opcode == OpCodes.Ldc_R4 && (float)instruction.operand == 1000f)
                     yield return new(OpCodes.Ldc_R4, (float)5000);
                 else
