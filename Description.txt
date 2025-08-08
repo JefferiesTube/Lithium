@@ -1,0 +1,189 @@
+﻿This mod is inspired by mods like ValheimPlus that give you the possibility to adjust almost every setting to your preference. I wanted to make the start of a game slower and make a lot of gameplay options (like smashing of ATMs etc.) more valuable. 
+
+[b]Enabling required[/b]
+Lithium consists of several modules that can be toggled by setting the value of "Enabled" in the corresponding configuration file. All configuration files are saved in "/UserData/Lithium/" in separate JSON files. All setting files are created with default values when first starting a game with this mod. All modules are disabled per default and you need to enable them by changing the configuration file.
+
+[b][size=3]Value types[/size]
+Weighted Values
+[/b]You can provide lots of values and give each of them a weight. They are put in a random picker, but when picking an item, items with a higher weight are preferred, according to their relative weight. You can use this to make something like: 80% of the times give me option A, 15% option B and 5% option C. The weights do not have to add up to 100%, this is calculated internally automatically.
+
+[b]Weighted Normalized Values
+[/b]Similar to WeightedValues, but only works for numeric values. Internally, they are use to create a curve using the given weights and then pick a random value on this curve. Allows you to get values inbetween of individual weighted values.
+
+
+[quote][b]﻿[/b][size=3][b]Module "Customers"[/b][/size]
+[i]ConfigFile: customers.json[/i]
+
+[b]Description[/b]
+Make customers preferred effects more relevant. Once you've reached a rank of "Hoolum II", customers will only order products from you or your dealers, if at least one of their desired effects is provided by the product. They will send you a message listing their desired effects (and the name of their dealer if appliccable) if there is no suitable offer. Products providing multiple of their effects are preferred (using a weighted random). 
+When providing samples to customers, the same requirements apply, but you get a percentage bonus for each level of quality you exceed their required quality standards. Makes getting new customers a challenge and feels much more rewarding. 
+
+[b]Config settings
+[/b]none[/quote]
+[quote][b]﻿[size=3]Module "DryingRacks"[/size][/b]
+[i]ConfigFile: DryingRacks.json[/i]
+
+[b]Description[/b]
+Allows you to set a custom duration for the drying operation per Quality. Increase the value to make drying take more time and prevent you from easily getting loads of heavenly product.
+
+[b]Config settings
+
+[/b][u]DryTimePerQuality[/u]   ﻿
+The amount of ingame minutes required to increase a product quality by one level on a drying rack
+[list]
+[*]DefaultValue: 720
+[*]Recommended Value: 1440
+[/list][/quote]
+[quote][b]﻿[size=3]Module "LabOven"[/size][/b]
+[i]ConfigFile: LabOven.json[/i]
+
+[b]Description[/b]
+Allows you to set a custom values for lab ovens.
+
+[b]Config settings[/b]
+[u]Speed
+[/u]The factor the working speed of lab ovens are multiplied with. Higher values result in faster operations.[u]
+[/u][list]
+[*]DefaultValue: 1
+[*]Recommended Value: 2
+[/list][/quote]
+[quote][b]﻿[size=3]Module "MixingStations"[/size][/b]
+[i]ConfigFile: MixingStations.json[/i]
+
+[b]Description[/b]
+Allows you to set a custom values for mixing stations.
+
+[b]Config settings
+
+[/b][u]SpeedFactor
+[/u]The factor the working speed of mixing stations are multiplied with. Higher values result in faster operations[u]
+[/u][list]
+[*]DefaultValue: 1
+[*]Recommended Value: 2
+[/list][u]InputCapacity
+[/u]The maximum amount of items you can put into the input for a mixing operation. Useful if you increased the stack sizes as well.
+[list]
+[*]Default Value: 20
+[/list][list]
+[*]Recommended Value: 60
+[/list][/quote]
+[quote][b]﻿[size=3]Module "StoryLine"[/size][/b]
+[i]ConfigFile: Storyline.json[/i]
+
+[b]Description[/b]
+Allows you to set a custom options that alter or affect the quests and storyline.
+
+[b]Config settings
+
+[/b][u]PreventRVExplosion
+[/u]If active, the RV will not explode and the quest will be skipped. To allow further progression, the cartel node is activated (but hovers in the air, because the wreckage below is missing). Set this to true if you want to start from the RV and not immediately move to the hotel. Especially recommended if you alter the property prices.
+[list]
+[*]DefaultValue: true
+[*]Recommended Value: true
+[/list][/quote]
+[quote][b]﻿[size=3]Module "PlantGrowth"[/size][/b]
+[i]ConfigFile: Plants.json[/i]
+
+[b]Description[/b]
+Allows you to alter the growing and harvesting behavior of plants. Also affects botanists working on plants.
+
+[b]Config settings
+
+[/b][u]GrowthModifier
+[/u]Allows to control the grow speed of all plants. Use this to speed up or slow down the growth speed. Higher values result in faster growing plants.
+[list]
+[*]DefaultValue: 1
+[*]Recommended Value: 0.25
+[/list][u]WaterDrainModifier
+[/u]Allows to control the water loss of pots.. Higher values result in faster water loss.
+[list]
+[*]DefaultValue: 1
+[*]Recommended Value: 0.15
+[/list][u]RandomYieldPerBudPicker
+[/u]Allows to set weighted values for the amount of product you get from each harvested bud. 
+[list]
+[*]DefaultValue: {1,1}
+[*]Recommended Value: {10, 1}, {2, 2}, {1, 3}
+[/list][u]RandomYieldQualityPicker
+[/u]Allows to set weighted values for the quality of the product harvested from each bud. This will result in a plant giving various amounts of quality products. Required more storage space, but also make product selection for samples a more important part of the gameplay.
+[list]
+[*]DefaultValue: {1,0}
+[*]Recommended Value: {1.5, -0.24}, {5.0, 0}, {1.5, 0.4}, {0.1, 1}
+[/list][u]RandomYieldModifierPicker
+[/u]Allows to have a plant have various amounts of buds. You might get a strong plant with lots of buds or a crappy one with much less buds.
+[list]
+[*]DefaultValue: {1,1}
+[*]Recommended Value: {8.0, 1.0}, {1.0, 0.25}, {2.0, 1.5}, {1.0, 2.0}, {0.5, 3.0}
+[/list][/quote]
+[quote][b]﻿[size=3]Module "PropertyPrices"[/size][/b]
+[i]ConfigFile: Property Prices.json[/i]
+
+[b]Description[/b]
+Allows you to set custom prices for all properties and businesses.
+
+[b]Config settings
+
+[/b][u]PropertyPrices
+[/u]A list of all properties and their respective princes
+[list]
+[*]Recommended Values:
+[*]RV: 0
+[*]Motel Room: 750
+[*]Sweatshop: 8000
+[*]Storage Unit: 15000
+[*]Bungalow: 30000
+[*]Barn: 100000
+[*]Docks Warehouse: 250000
+[*]Laundromat: 5000
+[*]Post Office: 25000
+[*]Car Wash: 50000
+[*]Taco Ticklers: 100000
+[*]Manor: 100000
+[/list][/quote]
+[quote][b]﻿[size=3]Module "StackSizes"[/size][/b]
+[i]ConfigFile: StackSizes.json[/i]
+
+[b]Description[/b]
+Allows you to set a custom maximum stack size per category. You can also set specific items to separate values and ignore specific items.
+
+[b]Config settings
+
+[/b][u]CategorySizes
+[/u]A list of all categories and their new StackSize
+[list]
+[*]Recommended Values
+[*]Product: 40
+[*]Packaging: 60
+[*]Agriculture: 20
+[*]Tools: 10
+[*]Furniture: 10
+[*]Lighting: 10
+[*]Cash: 10000
+[*]Consumable: 40
+[*]Equipment: 20
+[*]Ingredient: 40
+[*]Decoration: 10
+[*]Clothing: 10
+[*]Storage: 10
+[/list][/quote]
+[quote][b]﻿[size=3]Module "TrashGrabber"[/size][/b]
+[i]ConfigFile: TrashGrabber.json[/i]
+
+[b]Description[/b]
+Allows you to set a custom capacity for the Trashgrabber.
+
+[b]Config settings
+
+[/b][u]CustomCapacity
+[/u]Overrides the maximum capacity of the TrashGrabber. Allows you to exceed 100% until the desired limit is reached. 
+[list]
+[*]DefaultValue: 20
+[*]Recommended Value: 100
+[/list][/quote]
+[b]Inspired by
+[/b]I tried and played a lot of mods in Schedule I and some have inspired my to do things for Lithium.
+[list]
+[*]BetterStacks by zarnes - great mod and has more options (like working for deliveries etc.). Give it a try!
+[*]TrashGrabberPlus by Elio - Great idea and even updates the percentage on the item and makes the TrashGrabber has infinite capacity. If you love collecting trash, you should definetely get this mod!
+[*]Ovens Cook Faster by lasersquid - apart from loving the username, this game the idea to modify the usage times of most stations. Never tried this mod on it's own, but was inspired by it. So if LabOvens are a pain to you, give lasersquid some support!
+[/list]

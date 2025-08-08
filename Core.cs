@@ -1,14 +1,19 @@
-﻿using Lithium.Modules;
+﻿using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppScheduleOne.UI.Shop;
+using Lithium.Modules;
 using Lithium.Modules.Customers;
 using Lithium.Modules.DryingRacks;
 using Lithium.Modules.LabOven;
+using Lithium.Modules.MixingStations;
 using Lithium.Modules.PlantGrowth;
 using Lithium.Modules.PropertyPrices;
+using Lithium.Modules.Shops;
 using Lithium.Modules.StackSizes;
+using Lithium.Modules.Storyline;
 using Lithium.Modules.TrashGrabber;
 using MelonLoader;
 using UnityEngine;
-
+using Object = UnityEngine.Object;
 
 [assembly: MelonInfo(typeof(Lithium.Core), "Lithium", "1.0.0", "DerTomDer & YukiSora", null)]
 [assembly: MelonGame("TVGS", "Schedule I")]
@@ -25,21 +30,24 @@ namespace Lithium
             new ModCustomers(),
             new ModStackSizes(),
             new ModLabOven(),
-            new ModTrashGrabber()
+            new ModTrashGrabber(),
+            new ModMixingStations(),
+            new ModStoryline(),
+            new ModShops(),
         ];
 
         public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();
 
         public override void OnInitializeMelon()
         {
-            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("com.lithium");
-            harmony.PatchAll();
-
             foreach (ModuleBase module in Modules)
             {
                 LoggerInstance.Msg($"Loading {module.GetType().Name}");
                 module.Load();
             }
+
+            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony("com.lithium");
+            harmony.PatchAll();
 
             LoggerInstance.Msg("Lithium initialized");
         }
@@ -62,6 +70,12 @@ namespace Lithium
             {
                 _isFirstStart = true;
             }
+        }
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            List<string> shop = Object.FindObjectsOfType<ShopInterface>().ToList().Select(s => s.ShopCode).ToList();
         }
 
         //public static Sprite FindSprite(string spriteName)

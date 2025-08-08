@@ -496,6 +496,9 @@
 		<Compile Include="Modules\LabOven\ModLabOven.cs" />
 		<Compile Include="Modules\LabOven\Patches\OvenCookOperationIsReadyPatch.cs" />
 		<Compile Include="Modules\LabOven\Patches\OvenCookOperationGetCookDurationPatch.cs" />
+		<Compile Include="Modules\Storyline\ModStoryline.cs" />
+		<Compile Include="Modules\Storyline\Patches\RVSetExplodedPatch.cs" />
+		<Compile Include="Modules\Storyline\Patches\QuestWelcomeToHylandPointPatch.cs" />
 		<Compile Include="Modules\PlantGrowth\Behaviours\PlantBaseQuality.cs" />
 		<Compile Include="Modules\PlantGrowth\ModPlants.cs" />
 		<Compile Include="Modules\DryingRacks\ModDryingRacks.cs" />
@@ -508,6 +511,7 @@
 		<Compile Include="Modules\PropertyPrices\ModPropertyPrices.cs" />
 		<Compile Include="Modules\ModuleBase.cs" />
 		<Compile Include="Modules\ModuleConfiguration.cs" />
+		<Compile Include="Modules\Shops\ModShops.cs" />
 		<Compile Include="Modules\StackSizes\ModStackSizes.cs" />
 		<Compile Include="Modules\StackSizes\Patches\CashDragPatch.cs" />
 		<Compile Include="Modules\StackSizes\Patches\DryingRackCapacityPatch.cs" />
@@ -519,6 +523,9 @@
 		<Compile Include="Util\SuccessChanceCalculator.cs" />
 		<Compile Include="Util\WeightedNormalizer.cs" />
 		<Compile Include="Util\WeightedPicker.cs" />
+		<Compile Include="Modules\MixingStations\ModMixingStations.cs" />
+		<Compile Include="Modules\MixingStations\Patches\MixingStationCapacityPatch.cs" />
+		<Compile Include="Modules\MixingStations\Patches\MixingStationSpeedPatch.cs" />
 	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">

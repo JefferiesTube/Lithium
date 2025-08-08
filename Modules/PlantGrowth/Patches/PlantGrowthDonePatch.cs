@@ -19,7 +19,10 @@ namespace Lithium.Modules.PlantGrowth.Patches
             if (__instance.GetComponent<PlantModified>() != null) 
                 return;
 
-            __instance.gameObject.AddComponent<PlantModified>();
+            PlantModified pm = __instance.gameObject.AddComponent<PlantModified>();
+            pm.OriginalYieldLevel = __instance.YieldLevel;
+            Plant plant = __instance.GetComponentInParent<Plant>();
+            pm.QualityLevel = plant.QualityLevel;
             __instance.YieldLevel *= configuration.RandomYieldModifierPicker.Evaluate(UnityEngine.Random.value);
         }
     }

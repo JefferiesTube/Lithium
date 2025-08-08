@@ -1,0 +1,9 @@
+{
+  "name": "Lithium",
+  "description": "Modular balancing framework. Tweak systems like Employees, Plants, Machines, and more. Prevent runaway profits and resource overflow. Each feature is optional and fully toggleable. Designed for refined progression and customizable gameplay control.",
+  "version_number": "1.0.0",
+  "dependencies": [
+    "LavaGang-MelonLoader-0.7.1"
+  ],
+  "website_url": "https://www.nexusmods.com/schedule1/mods/1138"
+}

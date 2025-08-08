@@ -8,7 +8,8 @@ namespace Lithium.Modules
         private static readonly string ConfigFolder = Path.Combine(MelonEnvironment.UserDataDirectory, "Lithium");
 
         [JsonIgnore] public abstract string Name { get; }
-        
+
+        [JsonProperty(Order = -500)]
         public bool Enabled;
 
         public string GetConfigFile() => Path.Combine(ConfigFolder, $"{Name}.json");

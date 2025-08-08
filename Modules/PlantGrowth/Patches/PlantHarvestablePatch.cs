@@ -1,10 +1,11 @@
 ﻿using HarmonyLib;
+using Il2CppScheduleOne.DevUtilities;
+using Il2CppScheduleOne.Economy;
 using Il2CppScheduleOne.Growing;
 using Il2CppScheduleOne.UI;
-using System.Globalization;
 using Il2CppScheduleOne.ItemFramework;
+using Il2CppScheduleOne.PlayerScripts;
 using Lithium.Modules.PlantGrowth.Behaviours;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Lithium.Modules.PlantGrowth.Patches
@@ -12,12 +13,15 @@ namespace Lithium.Modules.PlantGrowth.Patches
     [HarmonyPatch(typeof(PlantHarvestable), nameof(PlantHarvestable.Harvest))]
     public class PlantHarvestablePatch
     {
+        private static readonly Dictionary<object, bool> SkipFlags = [];
+        private static readonly Dictionary<object, bool> GenerateFlags = [];
+
         [HarmonyPrefix]
-        public static void Prefix(PlantHarvestable __instance)
+        public static bool Prefix(PlantHarvestable __instance)
         {
             ModPlantsConfiguration configuration = Core.Get<ModPlants>().Configuration;
             if (!configuration.Enabled)
-                return;
+                return true;
 
             Plant componentInParent = __instance.GetComponentInParent<Plant>();
             if (!componentInParent.TryGetComponent(out PlantBaseQuality comp))
@@ -27,8 +31,25 @@ namespace Lithium.Modules.PlantGrowth.Patches
                 pbq.NeedsNotification = true;
             }
 
-            componentInParent.QualityLevel +=  configuration.RandomYieldQualityPicker.Pick();
-            __instance.ProductQuantity = (int) configuration.RandomYieldPerBudPicker.Pick();
+            if (!GenerateFlags.ContainsKey(__instance))
+            {
+                componentInParent.QualityLevel += configuration.RandomYieldQualityPicker.Pick();
+                __instance.ProductQuantity = (int)configuration.RandomYieldPerBudPicker.Pick();
+                GenerateFlags[__instance] = true;
+            }
+
+            //if player cannot fit item ... skip harvest
+            QualityItemInstance item = new QualityItemInstance(__instance.Product, __instance.ProductQuantity, ItemQuality.GetQuality(componentInParent.QualityLevel));
+            if (!PlayerSingleton<PlayerInventory>.Instance.CanItemFitInInventory(item))
+            {
+                SkipFlags[__instance] = true;
+                return false;
+            }
+            else
+            {
+                SkipFlags.Remove(__instance);
+                return true;
+            }
         }
 
         [HarmonyPostfix]
@@ -37,6 +58,12 @@ namespace Lithium.Modules.PlantGrowth.Patches
             ModPlantsConfiguration configuration = Core.Get<ModPlants>().Configuration;
             if (!configuration.Enabled)
                 return;
+
+            if (!SkipFlags.ContainsKey(__instance))
+                return;
+
+            GenerateFlags.Remove(__instance);
+
             Plant componentInParent = __instance.GetComponentInParent<Plant>();
             if (componentInParent.TryGetComponent(out PlantBaseQuality comp) && comp.NeedsNotification)
             {
