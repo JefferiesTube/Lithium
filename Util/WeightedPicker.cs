@@ -74,6 +74,15 @@
             _hasChanged = true;
         }
 
+        public void AddRange(IEnumerable<KeyValuePair<T, float>> entries)
+        {
+            foreach (KeyValuePair<T, float> entry in entries)
+            {
+                _dictionary.Add(entry.Key, entry.Value);
+            }
+            _hasChanged = true;
+        }
+
         public bool Remove(T key)
         {
             _hasChanged = true;
