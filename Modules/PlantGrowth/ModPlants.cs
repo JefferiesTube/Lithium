@@ -1,4 +1,5 @@
 ﻿using Il2CppInterop.Runtime.Injection;
+using System.Linq;
 using Lithium.Modules.PlantGrowth.Behaviours;
 using Lithium.Util;
 using Newtonsoft.Json;
@@ -59,17 +60,43 @@ namespace Lithium.Modules.PlantGrowth
             {
                 Configuration.RandomYieldPerBudPicker.Add(entry.Value, entry.Weight);
             }
+            // Fallback: if user provided an empty list or omitted the field
+            if (Configuration.RandomYieldsPerBudModifier.Count == 0)
+            {
+                Configuration.RandomYieldPerBudPicker.Add(1.0f, 7.0f);
+                Configuration.RandomYieldPerBudPicker.Add(2.0f, 2.0f);
+                Configuration.RandomYieldPerBudPicker.Add(3.0f, 1.0f);
+            }
 
             Configuration.RandomYieldModifierPicker = new();
             foreach (WeightedFloat entry in Configuration.RandomYieldModifiers)
             {
                 Configuration.RandomYieldModifierPicker.Add(entry.Weight, entry.Value);
             }
+            // Fallback: if empty or total weight <= 0, use default values
+            if (Configuration.RandomYieldModifiers.Count == 0 ||
+                Configuration.RandomYieldModifiers.Sum(e => e.Weight) <= 0f)
+            {
+                Configuration.RandomYieldModifierPicker.Add(7.5f, 1.0f);
+                Configuration.RandomYieldModifierPicker.Add(1.0f, 0.25f);
+                Configuration.RandomYieldModifierPicker.Add(1.0f, 1.5f);
+                Configuration.RandomYieldModifierPicker.Add(0.5f, 3.0f);
+            }
 
             Configuration.RandomYieldQualityPicker = new();
             foreach (WeightedFloat entry in Configuration.RandomQualityModifiers)
             {
                 Configuration.RandomYieldQualityPicker.Add(entry.Weight, entry.Value);
+            }
+            // Fallback: if empty or total weight <= 0, use default values
+            if (Configuration.RandomQualityModifiers.Count == 0 ||
+                Configuration.RandomQualityModifiers.Sum(e => e.Weight) <= 0f)
+            {
+                Configuration.RandomYieldQualityPicker.Add(0.0f, -0.5f);
+                Configuration.RandomYieldQualityPicker.Add(0.5f, 0.0f);
+                Configuration.RandomYieldQualityPicker.Add(0.75f, 0.0f);
+                Configuration.RandomYieldQualityPicker.Add(0.2f, 0.4f);
+                Configuration.RandomYieldQualityPicker.Add(0.01f, 0.5f);
             }
         }
 
