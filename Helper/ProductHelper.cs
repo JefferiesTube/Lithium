@@ -1,4 +1,5 @@
 ﻿using Il2CppScheduleOne.Economy;
+using Il2CppScheduleOne.ItemFramework;
 using Il2CppScheduleOne.Product;
 using Il2CppScheduleOne.Properties;
 
@@ -19,7 +20,7 @@ namespace Lithium.Helper
             return suitableProducts > 0 || desires.Count <= 0;
         }
 
-        public static bool DealerHasSuitableProduct(this Customer customer)
+        public static bool DealerHasSuitableProduct(this Customer customer, out List<ItemInstance> dealerItems)
         {
             List<string> desires = customer.CustomerData.PreferredProperties
                 .ToList()
@@ -27,12 +28,15 @@ namespace Lithium.Helper
                 .ToList();
 
             if (desires.Count == 0)
+            {
+                dealerItems = [];
                 return true;
+            }
 
-            return customer.AssignedDealer.ItemSlots
-                .ToList()
-                .Any(i => i.ItemInstance is ProductItemInstance { Definition: ProductDefinition pd }
-                                   && ProductMatchesDesires(pd, desires));
+            dealerItems = customer.AssignedDealer.Inventory.ItemSlots.ToList().Where(i => i.ItemInstance != null).Select(i => i.ItemInstance).ToList();
+            List<ProductDefinition> products = dealerItems.Select(d => ProductManager.DiscoveredProducts.ToList().Single(p => p.ID.Equals(d.ID))).Distinct().ToList();
+            List<string> dealerProducts = products.Where(p => p != null).SelectMany(p => p.Properties.ToList()).Select(p => p.Name).Distinct().ToList();
+            return desires.Intersect(dealerProducts.Distinct().ToList()).Any();
         }
 
         public static bool ProductMatchesDesires(ProductDefinition pd, List<string> desires) => pd.Properties.ToList().Select(p => p.Name).Intersect(desires).Any();
@@ -44,5 +48,7 @@ namespace Lithium.Helper
             return ProductManager.DiscoveredProducts.ToList()
                 .Count(p => p.Properties.ToList().Select(p => p.Name).Intersect(desires).Any());
         }
+
+        public static float GetMatchCount(List<Property> source, List<string> desires) => source.Count(p => desires.Contains(p.Name));
     }
 }

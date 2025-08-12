@@ -8,7 +8,6 @@ using Il2CppScheduleOne.Product;
 using Il2CppScheduleOne.Quests;
 using Lithium.Helper;
 using Lithium.Modules.Customers.Behaviours;
-using Lithium.Modules.TrashGrabber;
 using Lithium.Util;
 using UnityEngine;
 
@@ -44,32 +43,42 @@ namespace Lithium.Modules.Customers.Patches
 
             if (__instance.AssignedDealer != null)
             {
-                if (__instance.DealerHasSuitableProduct())
+                if (__instance.DealerHasSuitableProduct(out List<ItemInstance> dealerItems))
                 {
-                    List<(ProductItemInstance instance, int matchcount)> suitableItems = __instance.AssignedDealer.ItemSlots
-                        .ToList()
-                        .Where(i => i.ItemInstance is ProductItemInstance { Definition: ProductDefinition pd }
-                                    && ProductHelper.ProductMatchesDesires(pd, desires))
-                        .Select(i => (instance: i.ItemInstance as ProductItemInstance, 
-                            matchcount: ProductHelper.GetMatchCount((i.ItemInstance as ProductItemInstance).Definition as ProductDefinition, desires)))
-                        .ToList();
+                    List<ProductDefinition> products = dealerItems.Select(d => ProductManager.DiscoveredProducts.ToList().Single(p => p.ID.Equals(d.ID))).Distinct().ToList();
+                    if(products.Count == 0)
+                    {
+                        NotifyDealerNotSuitable(__instance);
+                        __result = null;
+                        return;
+                    }
+
+                    Dictionary<string, int> productMaxQuantity = [];
+                    foreach (ProductDefinition product in products)
+                    {
+                        if (product == null)
+                            continue;
+                        int maxQuantity = dealerItems
+                            .Where(i => i.ID == product.ID)
+                            .Sum(i => i.Quantity);
+                        if (maxQuantity > 0)
+                        {
+                            productMaxQuantity[product.ID] = maxQuantity;
+                        }
+                    }
 
                     WeightedPicker<string> pickableItems = new();
-                    foreach (var (instance, matchcount) in suitableItems)
+                    
+                    foreach (KeyValuePair<string, int> entry in productMaxQuantity)
                     {
-                        if (instance == null || instance.Definition == null || instance.Quantity <= 0)
-                            continue;
-
                         // TODO: Add special patterns here, once this module gets implemented
-                        pickableItems.Add(instance.Definition.ID, matchcount);
+                        pickableItems.Add(entry.Key, ProductHelper.GetMatchCount(products.First(p => p.ID.Equals(entry.Key)).Properties.ToList(), desires));
                     }
 
                     id = pickableItems.Pick();
-                    quantity = suitableItems
-                        .FirstOrDefault(i => i.instance.Definition.ID == id).instance.Quantity;
+                    quantity = productMaxQuantity[id];
 
-                    RewireOrderedProduct(__result, id, quality,
-                        Mathf.Clamp(quantity, 1, quantity));
+                    RewireOrderedProduct(__result, id, quality, Mathf.Clamp(quantity, 1, quantity));
                 }
                 else
                 {

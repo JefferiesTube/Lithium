@@ -4,7 +4,7 @@
     {
         public override string Name => "MixingStation";
         public int InputCapacity { get; set; } = 20;
-        public float SpeedFactor { get; set; } = 1;
+        public int MixStepsPerSecond { get; set; } = 1;
     }
 
     public class ModMixingStations : ModuleBase<ModMixingStationsConfiguration>

@@ -25,13 +25,13 @@ namespace Lithium.Modules.PlantGrowth
         public float GrowthModifier = 1f;
         public float WaterDrainModifier = 1f;
 
-        public List<WeightedFloat> RandomYieldsPerBudModifier = [ new(1, 1) ];
-        public List<WeightedFloat> RandomYieldModifiers = [ new(1, 1)];
-        public List<WeightedFloat> RandomQualityModifiers = [new(1, 0)];
+        public List<WeightedFloat> RandomYieldsPerBudModifier = [ new(7.0f, 1.0f), new(2.0f, 2.0f), new(1.0f, 3.0f) ];
+        public List<WeightedFloat> RandomYieldModifiers = [ new(7.5f, 1), new(1.0f, 0.25f), new(1.0f, 1.5f), new(0.5f, 3.0f)];
+        public List<WeightedFloat> RandomQualityModifiers = [new(0, -0.5f), new(0.5f, 0), new(0.75f, 0), new(0.2f, 0.4f), new(0.01f, 0.5f)];
 
         [JsonIgnore] public WeightedPicker<float> RandomYieldPerBudPicker;
         [JsonIgnore] public WeightedNormalizer RandomYieldModifierPicker;
-        [JsonIgnore] public WeightedPicker<float> RandomYieldQualityPicker;
+        [JsonIgnore] public WeightedNormalizer RandomYieldQualityPicker;
     }
 
     public class ModPlants : ModuleBase<ModPlantsConfiguration>
@@ -63,13 +63,13 @@ namespace Lithium.Modules.PlantGrowth
             Configuration.RandomYieldModifierPicker = new();
             foreach (WeightedFloat entry in Configuration.RandomYieldModifiers)
             {
-                Configuration.RandomYieldModifierPicker.Add(entry.Value, entry.Weight);
+                Configuration.RandomYieldModifierPicker.Add(entry.Weight, entry.Value);
             }
 
             Configuration.RandomYieldQualityPicker = new();
             foreach (WeightedFloat entry in Configuration.RandomQualityModifiers)
             {
-                Configuration.RandomYieldQualityPicker.Add(entry.Value, entry.Weight);
+                Configuration.RandomYieldQualityPicker.Add(entry.Weight, entry.Value);
             }
         }
 

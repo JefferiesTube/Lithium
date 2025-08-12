@@ -2,7 +2,7 @@
 using Il2CppScheduleOne.ObjectScripts;
 using Il2CppScheduleOne.UI.Stations;
 
-namespace Lithium.Modules.StackSizes.Patches
+namespace Lithium.Modules.DryingRacks.Patches
 {
     [HarmonyPatch(typeof(DryingRackCanvas), nameof(DryingRackCanvas.SetIsOpen))]
     public class DryingRackCapacityPatch
@@ -10,13 +10,13 @@ namespace Lithium.Modules.StackSizes.Patches
         [HarmonyPostfix]
         public static void DryingRackCapacity(DryingRackCanvas __instance, DryingRack rack, bool open)
         {
-            ModStackSizesConfiguration config = Core.Get<ModStackSizes>().Configuration;
+            ModDryingRacksConfiguration config = Core.Get<ModDryingRacks>().Configuration;
             if(!config.Enabled)
                 return;
 
             if (rack is not null)
             {
-                rack.ItemCapacity = config.DryingRack;
+                rack.ItemCapacity = config.Capacity;
             }
         }
     }

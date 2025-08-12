@@ -1,16 +1,24 @@
-﻿using Il2CppScheduleOne.UI.Shop;
+﻿using Il2CppScheduleOne.Economy;
+using Il2CppScheduleOne.NPCs.CharacterClasses;
+using Il2CppScheduleOne.UI.Phone;
+using Il2CppScheduleOne.UI.Shop;
 using Lithium.Helper;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Lithium.Modules.Shops
 {
+    public class SupplierListingOverride
+    {
+        public Dictionary<string, float> PriceOverrides { get; set; } = [];
+    }
+
     public class ItemListingOverride
     {
         public float Price { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public ShopListing.ERestockRate RestockRate { get; set; } = ShopListing.ERestockRate.Daily;
-        public int Stock { get; set; } = 0;
-        public bool LimitedStock { get; set; } = false;
+        public int Stock { get; set; } = -1;
     }
 
     public class ShopListingSettings
@@ -24,13 +32,6 @@ namespace Lithium.Modules.Shops
         [JsonProperty(Order = 3)]
         public ShopInterface.EPaymentType PaymentType { get; set; }
         
-        [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty(Order = 4)]
-        public ShopListing.ERestockRate RestockRate { get; set; } = ShopListing.ERestockRate.Daily;
-
-        [JsonProperty(Order = 5)]
-        public List<string> RemovedItems = [];
-
         [JsonProperty(Order = 6)]
         public Dictionary<string, ItemListingOverride> ItemOverrides = [];
     }
@@ -49,11 +50,65 @@ namespace Lithium.Modules.Shops
         public ShopListingSettings CentralGasStation;
         public ShopListingSettings DansHardware;
         public ShopListingSettings HandyHanks;
+
+        public SupplierListingOverride Albert;
+        public SupplierListingOverride Shirley;
+        public SupplierListingOverride Salvador;
     }
 
     public class ModShops : ModuleBase<ModShopsConfiguration>
     {
         public override void Apply()
+        {
+            ApplyShopOverrides();
+
+            ApplySupplierOverrides();
+
+            Configuration.SaveConfiguration();
+            //if (network && NetworkSingleton<ShopManager>.InstanceExists && this.Shop != null)
+            //{
+            //    NetworkSingleton<ShopManager>.Instance.SendStock(this.Shop.ShopCode, this.Item.ID, quantity);
+            //}
+        }
+
+        private void ApplySupplierOverrides()
+        {
+            void AssertSupplierConfigEntryExists(ref SupplierListingOverride configuration, Supplier supplier)
+            {
+                configuration ??= new()
+                {
+                    PriceOverrides = supplier.OnlineShopItems.ToDictionary(
+                        listing => listing.Item.ID,
+                        listing => listing.Price)
+                };
+            }
+
+            void ApplySupplierConfigValues(SupplierListingOverride configuration, Supplier supplier)
+            {
+                foreach (PhoneShopInterface.Listing listing in supplier.OnlineShopItems)
+                {
+                    if (configuration.PriceOverrides.TryGetValue(listing.Item.ID, out float @override))
+                    {
+                        listing.Item.BasePurchasePrice = @override;
+                    }
+                }                
+            }
+
+            Albert albert = UnityEngine.Object.FindObjectOfType<Albert>();
+            AssertSupplierConfigEntryExists(ref Configuration.Albert, albert);
+            ApplySupplierConfigValues(Configuration.Albert, albert);
+
+            Shirley shirley = UnityEngine.Object.FindObjectOfType<Shirley>();
+            AssertSupplierConfigEntryExists(ref Configuration.Shirley, shirley);
+            ApplySupplierConfigValues(Configuration.Shirley, shirley);
+
+
+            Salvador salvador = UnityEngine.Object.FindObjectOfType<Salvador>();
+            AssertSupplierConfigEntryExists(ref Configuration.Salvador, salvador);
+            ApplySupplierConfigValues(Configuration.Salvador, salvador);
+        }
+
+        private void ApplyShopOverrides()
         {
             List<ShopInterface> shop = UnityEngine.Object.FindObjectsOfType<ShopInterface>().ToList();
             foreach (ShopInterface shopInterface in shop)
@@ -117,12 +172,6 @@ namespace Lithium.Modules.Shops
                         break;
                 }
             }
-
-            Configuration.SaveConfiguration();
-            //if (network && NetworkSingleton<ShopManager>.InstanceExists && this.Shop != null)
-            //{
-            //    NetworkSingleton<ShopManager>.Instance.SendStock(this.Shop.ShopCode, this.Item.ID, quantity);
-            //}
         }
 
         private void AssertConfigurationEntries(ref ShopListingSettings configSetting,
@@ -138,11 +187,12 @@ namespace Lithium.Modules.Shops
                     listing => new ItemListingOverride
                     {
                         Price = listing.Price,
-                        Stock = listing.DefaultStock,
+                        Stock = listing.LimitedStock ? listing.DefaultStock : -1,
                         RestockRate = listing.RestockRate,
-                        LimitedStock = listing.LimitedStock
                     }),
             };
+            shopInterface.RefreshShownItems();
+            shopInterface.RefreshUnlockStatus();
         }
 
         private void ApplyShopSettings(List<ShopListing> listings, ShopInterface shopInterface,
@@ -150,18 +200,20 @@ namespace Lithium.Modules.Shops
         {
             if (!shopSettings.Override)
                 return;
+
             shopInterface.PaymentType = shopSettings.PaymentType;
             foreach (ShopListing listing in listings)
             {
                 if (!shopSettings.ItemOverrides.TryGetValue(listing.Item.ID, out ItemListingOverride overrideItem))
-                {
-                    
-                }
-                //listing.LimitedStock = && overrideItem.LimitedStock;
+                    continue;
+
+                listing.LimitedStock = overrideItem.Stock >= 0;
+                listing.DefaultStock = overrideItem.Stock >= 0 ? overrideItem.Stock : shopSettings.DefaultStock;
+                listing.CurrentStock = listing.DefaultStock;
+                listing.OverridePrice = true;
+                listing.OverriddenPrice = overrideItem.Price;
+                listing.RestockRate = overrideItem.RestockRate;
             }
-
-            listings[0].RestockRate = shopSettings.RestockRate;
-
         }
     }
 }

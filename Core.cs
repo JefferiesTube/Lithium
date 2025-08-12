@@ -1,5 +1,4 @@
-﻿using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using Il2CppScheduleOne.UI.Shop;
+﻿using Il2CppScheduleOne.Growing;
 using Lithium.Modules;
 using Lithium.Modules.Customers;
 using Lithium.Modules.DryingRacks;
@@ -13,7 +12,6 @@ using Lithium.Modules.Storyline;
 using Lithium.Modules.TrashGrabber;
 using MelonLoader;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 [assembly: MelonInfo(typeof(Lithium.Core), "Lithium", "1.0.0", "DerTomDer & YukiSora", null)]
 [assembly: MelonGame("TVGS", "Schedule I")]
@@ -37,6 +35,15 @@ namespace Lithium
         ];
 
         public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();
+
+        //public override void OnUpdate()
+        //{
+        //    base.OnUpdate();
+        //    if (Input.GetKeyDown(KeyCode.F5))
+        //    {
+        //        var x = UnityEngine.Object.FindObjectsOfType<Additive>().ToList();
+        //    }
+        //}
 
         public override void OnInitializeMelon()
         {
@@ -72,11 +79,6 @@ namespace Lithium
             }
         }
 
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-            List<string> shop = Object.FindObjectsOfType<ShopInterface>().ToList().Select(s => s.ShopCode).ToList();
-        }
 
         //public static Sprite FindSprite(string spriteName)
         //{

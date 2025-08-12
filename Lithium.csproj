@@ -496,6 +496,8 @@
 		<Compile Include="Modules\LabOven\ModLabOven.cs" />
 		<Compile Include="Modules\LabOven\Patches\OvenCookOperationIsReadyPatch.cs" />
 		<Compile Include="Modules\LabOven\Patches\OvenCookOperationGetCookDurationPatch.cs" />
+		<Compile Include="Modules\Shops\Patches\ForceUpdateShopPrices.cs" />
+		<Compile Include="Modules\Shops\Patches\SupplierStartPatch.cs" />
 		<Compile Include="Modules\Storyline\ModStoryline.cs" />
 		<Compile Include="Modules\Storyline\Patches\RVSetExplodedPatch.cs" />
 		<Compile Include="Modules\Storyline\Patches\QuestWelcomeToHylandPointPatch.cs" />
@@ -514,7 +516,7 @@
 		<Compile Include="Modules\Shops\ModShops.cs" />
 		<Compile Include="Modules\StackSizes\ModStackSizes.cs" />
 		<Compile Include="Modules\StackSizes\Patches\CashDragPatch.cs" />
-		<Compile Include="Modules\StackSizes\Patches\DryingRackCapacityPatch.cs" />
+		<Compile Include="Modules\DryingRacks\Patches\DryingRackCapacityPatch.cs" />
 		<Compile Include="Modules\StackSizes\ItemRegistry.cs" />
 		<Compile Include="Modules\StackSizes\Patches\RegistryAddToRegistryPatch.cs" />
 		<Compile Include="Modules\StackSizes\Patches\RegistryStartPatch.cs" />

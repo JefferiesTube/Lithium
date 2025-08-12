@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using Il2CppScheduleOne.DevUtilities;
-using Il2CppScheduleOne.Economy;
 using Il2CppScheduleOne.Growing;
 using Il2CppScheduleOne.UI;
 using Il2CppScheduleOne.ItemFramework;
@@ -33,7 +32,7 @@ namespace Lithium.Modules.PlantGrowth.Patches
 
             if (!GenerateFlags.ContainsKey(__instance))
             {
-                componentInParent.QualityLevel += configuration.RandomYieldQualityPicker.Pick();
+                componentInParent.QualityLevel += configuration.RandomYieldQualityPicker.Evaluate(UnityEngine.Random.value);
                 __instance.ProductQuantity = (int)configuration.RandomYieldPerBudPicker.Pick();
                 GenerateFlags[__instance] = true;
             }
@@ -59,10 +58,11 @@ namespace Lithium.Modules.PlantGrowth.Patches
             if (!configuration.Enabled)
                 return;
 
-            if (!SkipFlags.ContainsKey(__instance))
+            if (SkipFlags.ContainsKey(__instance))
                 return;
 
-            GenerateFlags.Remove(__instance);
+            if (!GenerateFlags.Remove(__instance))
+                return;
 
             Plant componentInParent = __instance.GetComponentInParent<Plant>();
             if (componentInParent.TryGetComponent(out PlantBaseQuality comp) && comp.NeedsNotification)

@@ -180,6 +180,45 @@ Allows you to set a custom capacity for the Trashgrabber.
 [*]DefaultValue: 20
 [*]Recommended Value: 100
 [/list][/quote]
+[quote][b]﻿[size=3]Module "Shops"[/size][/b]
+[i]ConfigFile: Shops.json[/i]
+
+[b]Description[/b]
+Allows you to set a custom prices for all shops. Also allows you to limit stock for specific items, specify the restock time (Daily, Weekly, Never). Also allows to specify the currency the shop uses or prefers.
+
+[b]Config settings
+Each shop has it's own section, so you can set them individually. Each section has the following settings:
+
+[/b][u]Override
+[/u]If true, the shop will use the values specified in this section. If false, the shop will use the default values.
+[list]
+[*]DefaultValue: false
+[*]Recommended Value: true
+[/list]
+[u]DefaultStock
+[/u]The default stock for all items. If set to -1, the stock will not be limited per default.
+[list]
+[*]DefaultValue: -1
+[*]Recommended Value: -1
+[/list]
+[u]PaymentType
+[/u]The type of payment the shop accepts. Can be "Cash", "Online", "PreferCash" or "PreferOnline".
+[list]
+[*]DefaultValue: varies per shop
+[/list]
+[u]ItemOverrides
+[/u]A list of items and their respective prices, restock time and stock. If an item is not listed, the shop will use the default values.
+Each item has the following settings:
+[list]
+[*]Price: The price of the item in the shop
+[*]RestockRate: The time it takes for the item to be restocked. Can be "Daily", "Weekly" or "Never".
+[*]Stock: The maximum stock of the item in the shop. If set to -1, the stock will not be limited.
+[*]LimitedStock: if true, the item will be limited to the specified stock.
+[/list]
+
+[/quote]
+
+
 [b]Inspired by
 [/b]I tried and played a lot of mods in Schedule I and some have inspired my to do things for Lithium.
 [list]

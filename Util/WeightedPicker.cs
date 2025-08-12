@@ -68,9 +68,9 @@
             _hasChanged = false;
         }
 
-        public void Add(T key, float value)
+        public void Add(T value, float weight)
         {
-            _dictionary.Add(key, value);
+            _dictionary.Add(value, weight);
             _hasChanged = true;
         }
 

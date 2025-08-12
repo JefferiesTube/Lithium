@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using Il2CppScheduleOne.ObjectScripts;
 using Lithium.Modules.PlantGrowth.Behaviours;
+using MelonLoader;
+using UnityEngine;
 
 namespace Lithium.Modules.PlantGrowth.Patches
 {
@@ -12,7 +14,15 @@ namespace Lithium.Modules.PlantGrowth.Patches
         {
             if (!Core.Get<ModPlants>().Configuration.Enabled)
                 return;
-            __result *= Core.Get<ModPlants>().Configuration.GrowthModifier;
+            float growthModifier = Core.Get<ModPlants>().Configuration.GrowthModifier;
+
+            if (growthModifier <= 0.001f)
+            {
+                MelonLogger.Error("Invalid Growth Modifier. Skipping patch");
+                return;
+            }
+
+            __result *= Mathf.Max(0.001f, growthModifier);
         }
     }
 
@@ -36,12 +46,14 @@ namespace Lithium.Modules.PlantGrowth.Patches
         {
             if (!Core.Get<ModPlants>().Configuration.Enabled)
                 return;
+            if (__instance == null)
+                return;
 
             PotBaseValues potBaseValues = __instance.gameObject.GetComponent<PotBaseValues>();
             if (potBaseValues == null)
                 return;
 
-            float baseDrain = __instance.gameObject.GetComponent<PotBaseValues>().BaseWaterDrainPerHour;
+            float baseDrain = potBaseValues.BaseWaterDrainPerHour;
             __instance.WaterDrainPerHour = baseDrain * Core.Get<ModPlants>().Configuration.WaterDrainModifier;
         }
     }
