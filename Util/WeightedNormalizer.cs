@@ -23,7 +23,14 @@
             float totalWeight = _weights.Sum();
 
             if (totalWeight == 0f)
-                throw new InvalidOperationException("Total weight cannot be zero.");
+            {
+                // Fallback: assume a single neutral value if available,
+                // otherwise default to 1.0 to avoid downstream zeros.
+                _cdf.Clear();
+                _cdf.Add(1f);
+                _isInitialized = true;
+                return;
+            }
 
             float cumulative = 0f;
             foreach (float w in _weights)
