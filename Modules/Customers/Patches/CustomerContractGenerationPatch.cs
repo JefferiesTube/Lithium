@@ -37,7 +37,6 @@ namespace Lithium.Modules.Customers.Patches
                 .ToList();
 
             ProductList.Entry orderedProduct = __result.Products.entries.ToList()[0];
-            string id = orderedProduct.ProductID;
             EQuality quality = orderedProduct.Quality;
             int quantity = orderedProduct.Quantity;
 
@@ -68,14 +67,13 @@ namespace Lithium.Modules.Customers.Patches
                     }
 
                     WeightedPicker<string> pickableItems = new();
-                    
                     foreach (KeyValuePair<string, int> entry in productMaxQuantity)
                     {
                         // TODO: Add special patterns here, once this module gets implemented
                         pickableItems.Add(entry.Key, ProductHelper.GetMatchCount(products.First(p => p.ID.Equals(entry.Key)).Properties.ToList(), desires));
                     }
 
-                    id = pickableItems.Pick();
+                    string id = pickableItems.Pick();
                     quantity = productMaxQuantity[id];
 
                     RewireOrderedProduct(__result, id, quality, Mathf.Clamp(quantity, 1, quantity));
@@ -106,14 +104,15 @@ namespace Lithium.Modules.Customers.Patches
             }
         }
 
-        private static void RewireOrderedProduct(ContractInfo __result, string id, EQuality quality, int quantity)
+        private static void RewireOrderedProduct(ContractInfo __result, string id, EQuality quality, int maxAvailableQuantity)
         {
+            int desiredQuantity = __result.Products.entries.ToList().Sum(e => e.Quantity);
             ProductList list = new();
             list.entries.Add(new()
             {
                 ProductID = id,
                 Quality = quality,
-                Quantity = quantity
+                Quantity = Mathf.Min(maxAvailableQuantity, desiredQuantity)
             });
             __result.Products = list;
         }
