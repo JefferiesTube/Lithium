@@ -14,7 +14,10 @@ namespace Lithium.Modules.DryingRacks.Patches
             if (!Core.Get<ModDryingRacks>().Configuration.Enabled)
                 return true;
 
-            int configValue = Core.Get<ModDryingRacks>().Configuration.DryTimePerQuality;
+            Dictionary<string, int> dryTimes = Core.Get<ModDryingRacks>().Configuration.PerQualityDryTimes;
+            string quality = __instance.AssignedOperation.StartQuality.ToString();
+
+            int configValue = dryTimes.GetValueOrDefault(quality, 720);
             DryingOperation op = __instance.AssignedOperation;
 
             float tNorm = Mathf.Clamp01((float)op.Time / configValue);

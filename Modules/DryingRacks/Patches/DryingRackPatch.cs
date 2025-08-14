@@ -14,13 +14,16 @@ namespace Lithium.Modules.DryingRacks.Patches
             if (!Core.Get<ModDryingRacks>().Configuration.Enabled)
                 return true;
 
-            int customThreshold = Core.Get<ModDryingRacks>().Configuration.DryTimePerQuality;
 
             // Clone the list to avoid modification issues during iteration
             foreach (DryingOperation dryingOperation in __instance.DryingOperations.ToArray())
             {
                 dryingOperation.Time++;
 
+                Dictionary<string, int> dryTimes = Core.Get<ModDryingRacks>().Configuration.PerQualityDryTimes;
+                string quality = dryingOperation.GetQuality().ToString();
+
+                int customThreshold = dryTimes.GetValueOrDefault(quality, 720);
                 if (dryingOperation.Time >= customThreshold)
                 {
                     if (dryingOperation.StartQuality >= EQuality.Premium)
