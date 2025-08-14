@@ -36,17 +36,11 @@ namespace Lithium
 
         public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();
 
-        //public override void OnUpdate()
-        //{
-        //    base.OnUpdate();
-        //    if (Input.GetKeyDown(KeyCode.F5))
-        //    {
-        //        var x = UnityEngine.Object.FindObjectsOfType<Additive>().ToList();
-        //    }
-        //}
-
+        public static MelonLogger.Instance Logger { get; set; }
+    
         public override void OnInitializeMelon()
         {
+            Logger = LoggerInstance;
             foreach (ModuleBase module in Modules)
             {
                 LoggerInstance.Msg($"Loading {module.GetType().Name}");

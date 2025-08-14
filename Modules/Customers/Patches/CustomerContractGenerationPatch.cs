@@ -20,13 +20,13 @@ namespace Lithium.Modules.Customers.Patches
         public static void Postfix(ref ContractInfo __result, Customer __instance, bool force = false)
         {
             ModCustomersConfiguration config = Core.Get<ModCustomers>().Configuration;
-            if (!config.Enabled)
+            if (!config.Enabled || !config.Contracts.Enabled)
                 return;
 
             if (__result == null || force)
                 return;
 
-            if (LevelManager.Instance.TotalXP < 1400)
+            if (LevelManager.Instance.TotalXP < config.Contracts.XPRequired)
             {
                 return;
             }
@@ -39,6 +39,9 @@ namespace Lithium.Modules.Customers.Patches
             ProductList.Entry orderedProduct = __result.Products.entries.ToList()[0];
             EQuality quality = orderedProduct.Quality;
             int quantity = orderedProduct.Quantity;
+
+            if (desires.Count == 0)
+                return;
 
             if (__instance.AssignedDealer != null)
             {
@@ -119,9 +122,14 @@ namespace Lithium.Modules.Customers.Patches
 
         private static void NotifyPlayerProductsNotSuitable(Customer __instance)
         {
+            ModCustomersConfiguration config = Core.Get<ModCustomers>().Configuration;
+
+            if(!config.Contracts.SendNotification)
+                return;
+
             if (__instance.TryGetComponent(out CustomerNotificationState state))
             {
-                if (TimeManager.Instance.Playtime - state.LastNotification < 60 * 5)
+                if (TimeManager.Instance.Playtime - state.LastNotification < 60 * config.Contracts.NotificationCooldownInMinutes)
                     return;
             }
             else
@@ -130,17 +138,25 @@ namespace Lithium.Modules.Customers.Patches
                 state.LastNotification = TimeManager.Instance.Playtime;
             }
 
-            MessagingManager.Instance.ReceiveMessage(new(
-                $"Hey, I wanted to get fresh stuff, but you don't offer good stuff. I prefer {ProductHelper.FormatDesires(__instance.CustomerData)}",
-                Message.ESenderType.Other), true, __instance.NPC.ID);
+            string msg = config.Contracts.MessageTemplates
+                .OrderBy(x => UnityEngine.Random.value)
+                .FirstOrDefault()
+                .Replace("##DESIRES##", ProductHelper.FormatDesires(__instance.CustomerData));
+
+            MessagingManager.Instance.ReceiveMessage(new(msg, Message.ESenderType.Other), true, __instance.NPC.ID);
             state.LastNotification = TimeManager.Instance.Playtime;
         }
 
         private static void NotifyDealerNotSuitable(Customer __instance)
         {
+            ModCustomersConfiguration config = Core.Get<ModCustomers>().Configuration;
+
+            if (!config.Contracts.SendNotificationForDealers)
+                return;
+
             if (__instance.TryGetComponent(out CustomerNotificationState state))
             {
-                if (TimeManager.Instance.Playtime - state.LastNotification < 60 * 5)
+                if (TimeManager.Instance.Playtime - state.LastNotification < 60 * config.Contracts.NotificationCooldownInMinutes)
                     return;
             }
             else
@@ -149,9 +165,13 @@ namespace Lithium.Modules.Customers.Patches
                 state.LastNotification = TimeManager.Instance.Playtime;
             }
 
-            MessagingManager.Instance.ReceiveMessage(new(
-                $"Hey, I wanted to get fresh stuff, but {__instance.AssignedDealer.FirstName} doesn't offer good stuff. I prefer {ProductHelper.FormatDesires(__instance.CustomerData)}",
-                Message.ESenderType.Other), true, __instance.NPC.ID);
+            string msg = config.Contracts.DealerTemplates
+                .OrderBy(x => UnityEngine.Random.value)
+                .FirstOrDefault()
+                .Replace("##DEALER##", __instance.AssignedDealer.FirstName)
+                .Replace("##DESIRES##", ProductHelper.FormatDesires(__instance.CustomerData));
+
+            MessagingManager.Instance.ReceiveMessage(new(msg, Message.ESenderType.Other), true, __instance.NPC.ID);
             state.LastNotification = TimeManager.Instance.Playtime;
         }
     }

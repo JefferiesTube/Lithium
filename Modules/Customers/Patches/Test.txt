@@ -1,5 +1,0 @@
-﻿GetProductEnjoyment 
-    
-    CheckContractGeneration 
-
-GetWeightedRandomProduct 

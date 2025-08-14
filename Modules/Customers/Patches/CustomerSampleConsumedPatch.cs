@@ -18,7 +18,7 @@ namespace Lithium.Modules.Customers.Patches
             float price, ref float __result)
         {
             ModCustomersConfiguration config = Core.Get<ModCustomers>().Configuration;
-            if (!config.Enabled)
+            if (!config.Enabled || !config.SampleOffering.Enabled)
                 return true;
 
             float sum = 0;
@@ -48,58 +48,17 @@ namespace Lithium.Modules.Customers.Patches
                 sum += SuccessChanceCalculator.CalculateSuccess(
                     productDefinition.DrugType,  
                     productItemInstance.Quality,
+                    config.SampleOffering.QualityLevelModifier,
                     __instance.CustomerData.Standards,
                     desires, 
                     productEffects,
-                    __instance.CustomerData.DefaultAffinityData);
+                    __instance.CustomerData.DefaultAffinityData,
+                    config.SampleOffering.IncludeDrugPreference,
+                    config.SampleOffering.BaseAcceptance);
             }
 
             __result = sum / items.Count;
             return false;
-        }
-
-        private static float CalculateSuccess(Customer customer, ProductDefinition product,
-            ProductItemInstance consumedSample)
-        {
-            float acceptance;
-            Il2CppSystem.Collections.Generic.List<string> desires = new();
-            foreach (Property property in customer.CustomerData.PreferredProperties)
-            {
-                desires.Add(property.Name);
-            }
-
-            Il2CppSystem.Collections.Generic.List<string> productEffects = new();
-            foreach (Property property in product.Properties)
-            {
-                productEffects.Add(property.Name);
-            }
-
-            if (desires.Count > 0)
-            {
-                int coveredEffects = 0;
-                foreach (string desire in desires)
-                {
-                    coveredEffects += productEffects.Contains(desire) ? 1 : 0;
-                }
-
-                acceptance = (float)coveredEffects / desires.Count;
-            }
-            else
-            {
-                acceptance = 1f;
-            }
-
-            int qualityDiff = (int)consumedSample.Quality - (int)customer.CustomerData.Standards;
-            acceptance += 0.2f * qualityDiff;
-
-            foreach (ProductTypeAffinity productAffinity in customer.currentAffinityData.ProductAffinities)
-            {
-                if (productAffinity.DrugType == product.DrugType)
-                    acceptance *= productAffinity.Affinity;
-            }
-
-            MelonLogger.Warning($"\x1B[38;5;226m Sample offered. Acceptance: {acceptance}");
-            return Mathf.Clamp01(acceptance);
         }
     }
 }
