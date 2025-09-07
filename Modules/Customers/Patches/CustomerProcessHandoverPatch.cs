@@ -99,7 +99,7 @@ namespace Lithium.Modules.Customers.Patches
         private static void ApplyEffectBonus(Customer customer, Contract contract, Il2CppSystem.Collections.Generic.List<ItemInstance> items,
             ModCustomersConfiguration config, List<Contract.BonusPayment> list)
         {
-            List<string> desires = customer.CustomerData.PreferredProperties.ToList().Select(p => p.Name).ToList();
+            List<string> desires = customer.CustomerData.PreferredProperties.ToList().Select(p => p.Name.ToLowerInvariant()).ToList();
             if (desires.Count == 0 || items == null || items.Count == 0)
                 return;
 
@@ -117,7 +117,7 @@ namespace Lithium.Modules.Customers.Patches
                 if(pd == null)
                     continue;
 
-                int matchCount = ProductHelper.GetMatchCount(pd, desires);
+                int matchCount = pd.Properties.ToList().Select(p => p.Name.ToLowerInvariant()).Intersect(desires).Count();
                 if(matchCount <= 0)
                     continue;
 
@@ -142,6 +142,7 @@ namespace Lithium.Modules.Customers.Patches
 
                 float itemBonus = fixedPart + percentPart;
                 totalBonusAmount += itemBonus;
+                MelonLogger.Msg($"Effect match bonus for item {pd.Name}: x{quantity} (matches: {matchCount}) Fixed: {fixedPart} Percent: {percentPart} Total: {itemBonus}");
             }
 
             if (totalBonusAmount <= 0f) 
