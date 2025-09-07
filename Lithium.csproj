@@ -488,7 +488,10 @@
 		<Compile Include="Helper\StringExtensions.cs" />
 		<Compile Include="Modules\ChemistryStation\ModChemistryStation.cs" />
 		<Compile Include="Modules\ChemistryStation\Patches\ChemistryCookOperationGetCookDurationPatch.cs" />
+		<Compile Include="Modules\Customers\Architecture\BonusPaymentHandler.cs" />
 		<Compile Include="Modules\Customers\Behaviours\CustomerNotificationState.cs" />
+		<Compile Include="Modules\Customers\BonusPayments\EffectCoverageBonus.cs" />
+		<Compile Include="Modules\Customers\BonusPayments\QualityBonus.cs" />
 		<Compile Include="Modules\Customers\ModCustomers.cs" />
 		<Compile Include="Modules\Customers\Patches\CustomerContractGenerationPatch.cs" />
 		<Compile Include="Modules\Customers\Patches\CustomerProcessHandoverPatch.cs" />

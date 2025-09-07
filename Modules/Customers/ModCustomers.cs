@@ -1,5 +1,7 @@
 ﻿using Il2CppInterop.Runtime.Injection;
+using Lithium.Modules.Customers.Architecture;
 using Lithium.Modules.Customers.Behaviours;
+using Lithium.Modules.Customers.BonusPayments;
 
 namespace Lithium.Modules.Customers
 {
@@ -69,15 +71,25 @@ namespace Lithium.Modules.Customers
 
     public class ModCustomers : ModuleBase<ModCustomersConfiguration>
     {
+        internal readonly List<IBonusPaymentHandler> BonusPaymentHandlers = [];
+
         public ModCustomers()
         {
             ClassInjector.RegisterTypeInIl2Cpp<CustomerNotificationState>();
+            RegisterBonusPaymentHandler(new EffectCoverageBonus());
+            RegisterBonusPaymentHandler(new BonusPayments.QualityBonus());
         }
 
         public override void Apply()
         {
             if (!Configuration.Enabled)
                 return;
+        }
+
+        public void RegisterBonusPaymentHandler(IBonusPaymentHandler handler)
+        {
+            if (!BonusPaymentHandlers.Contains(handler))
+                BonusPaymentHandlers.Add(handler);
         }
     }
 }
