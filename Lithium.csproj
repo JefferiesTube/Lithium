@@ -497,6 +497,8 @@
 		<Compile Include="Modules\Customers\Patches\CustomerProcessHandoverPatch.cs" />
 		<Compile Include="Modules\Customers\Patches\CustomerSampleConsumedPatch.cs" />
 		<Compile Include="Modules\Customers\Patches\DeliveryAppPatch.cs" />
+		<Compile Include="Modules\EffectCombos\BonusPayments\EffectComboBonus.cs" />
+		<Compile Include="Modules\EffectCombos\ModEffectCombos.cs" />
 		<Compile Include="Modules\Employees\ModEmployees.cs" />
 		<Compile Include="Modules\Employees\Patches\CleanerPatch.cs" />
 		<Compile Include="Modules\Employees\Patches\PackagerPatch.cs" />

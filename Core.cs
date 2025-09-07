@@ -4,6 +4,7 @@ using Lithium.Modules;
 using Lithium.Modules.ChemistryStation;
 using Lithium.Modules.Customers;
 using Lithium.Modules.DryingRacks;
+using Lithium.Modules.EffectCombos;
 using Lithium.Modules.Employees;
 using Lithium.Modules.LabOven;
 using Lithium.Modules.MixingStations;
@@ -39,7 +40,8 @@ namespace Lithium
             new ModShops(),
             new ModEmployees(),
             new ModChemistryStation(),
-            new ModWateringCan()
+            new ModWateringCan(),
+            new ModEffectCombos()
         ];
 
         public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();

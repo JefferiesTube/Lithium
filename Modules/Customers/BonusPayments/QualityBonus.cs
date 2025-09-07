@@ -10,9 +10,9 @@ namespace Lithium.Modules.Customers.BonusPayments
 {
     public class QualityBonus : IBonusPaymentHandler
     {
-        public bool BonusPaymentHandler(Customer customer, Contract contract, List<ItemInstance> items, out List<Contract.BonusPayment> bonus)
+        public bool BonusPaymentHandler(Customer customer, Contract contract, List<ItemInstance> items, out List<Contract.BonusPayment> boni)
         {
-            bonus = [];
+            boni = [];
             ModCustomersConfiguration config = Core.Get<ModCustomers>().Configuration;
 
             if (!config.QualityBonus.Enabled)
@@ -45,7 +45,7 @@ namespace Lithium.Modules.Customers.BonusPayments
             {
                 int bonusLevels = Mathf.RoundToInt(qualityDiff / 0.25f);
                 float bonusAmount = contract.Payment * (bonusLevels * config.QualityBonus.BonusPercentage / 100f);
-                bonus.Add(new("Quality Bonus", bonusAmount));
+                boni.Add(new("Quality Bonus", bonusAmount));
                 return true;
             }
 
