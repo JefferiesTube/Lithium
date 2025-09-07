@@ -88,7 +88,7 @@ namespace Lithium.Modules.Customers
 
         public void RegisterBonusPaymentHandler(IBonusPaymentHandler handler)
         {
-            if (!BonusPaymentHandlers.Contains(handler))
+            if (BonusPaymentHandlers.All(h => h.GetType() != handler.GetType()))
                 BonusPaymentHandlers.Add(handler);
         }
     }
