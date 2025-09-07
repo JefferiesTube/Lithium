@@ -6,6 +6,6 @@ namespace Lithium.Modules.Customers.Architecture
 {
     public interface IBonusPaymentHandler
     {
-        bool BonusPaymentHandler(Customer customer, Contract contract, List<ItemInstance> items, out Contract.BonusPayment bonus);
+        bool BonusPaymentHandler(Customer customer, Contract contract, List<ItemInstance> items, out List<Contract.BonusPayment> bonus);
     }
 }

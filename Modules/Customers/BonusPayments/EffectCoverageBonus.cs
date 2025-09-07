@@ -11,9 +11,9 @@ namespace Lithium.Modules.Customers.BonusPayments
 {
     public class EffectCoverageBonus : IBonusPaymentHandler
     {
-        public bool BonusPaymentHandler(Customer customer, Contract contract, List<ItemInstance> items, out Contract.BonusPayment bonus)
+        public bool BonusPaymentHandler(Customer customer, Contract contract, List<ItemInstance> items, out List<Contract.BonusPayment> bonus)
         {
-            bonus = null;
+            bonus = [];
             ModCustomersConfiguration config = Core.Get<ModCustomers>().Configuration;
 
             if (!config.EffectBonus.Enabled)
@@ -69,7 +69,7 @@ namespace Lithium.Modules.Customers.BonusPayments
             if (totalBonusAmount <= 0f)
                 return false;
 
-            bonus = new("Effect Match Bonus", totalBonusAmount);
+            bonus.Add(new("Effect Match Bonus", totalBonusAmount));
             return true;
         }
     }

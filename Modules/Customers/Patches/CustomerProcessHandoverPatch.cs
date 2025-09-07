@@ -62,9 +62,9 @@ namespace Lithium.Modules.Customers.Patches
             List<ItemInstance> itemInstances = items.ToList();
             foreach (IBonusPaymentHandler handler in Core.Get<ModCustomers>().BonusPaymentHandlers)
             {
-                if (handler.BonusPaymentHandler(__instance, contract, itemInstances, out Contract.BonusPayment bonus) && bonus.Amount > 0f)
+                if (handler.BonusPaymentHandler(__instance, contract, itemInstances, out List<Contract.BonusPayment> bonus) && bonus.Sum(b => b.Amount) > 0f)
                 {
-                    list.Add(bonus);
+                    list.AddRange(bonus);
                 }
             }
 
