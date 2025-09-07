@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using Il2CppScheduleOne.ObjectScripts;
-using Lithium.Modules.Customers;
 using UnityEngine;
 
 namespace Lithium.Modules.LabOven.Patches

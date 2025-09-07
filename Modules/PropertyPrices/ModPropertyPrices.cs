@@ -32,43 +32,6 @@ namespace Lithium.Modules.PropertyPrices
         {
             if (!Configuration.Enabled)
                 return;
-
-            ChangePropertyPrices();
-            UpdateMissMingDialog();
-        }
-
-        private void ChangePropertyPrices()
-        {
-            Property[] props = UnityEngine.Object.FindObjectsOfType<Property>();
-            foreach (Property prop in props)
-            {
-                if (!Configuration.PropertyPrices.TryGetValue(prop.PropertyName, out int price))
-                {
-                    MelonLoader.MelonLogger.Warning($"Property {prop.PropertyName} not found in configuration. Skipping.");
-                    continue;
-                }
-
-                prop.Price = price;
-               
-                if (prop.ForSaleSign != null)
-                    prop.ForSaleSign.transform.Find("Price").GetComponent<TextMeshPro>().text = MoneyManager.FormatAmount(price);
-                if (prop.ListingPoster != null)
-                    prop.ListingPoster.Find("Price").GetComponent<TextMeshPro>().text = MoneyManager.FormatAmount(price);
-            }
-        }
-
-        private void UpdateMissMingDialog()
-        {
-            DialogueController_Ming[] dialogueControllers = UnityEngine.Object.FindObjectsOfType<DialogueController_Ming>();
-            foreach (DialogueController_Ming item in dialogueControllers)
-            {
-                item.Price = item.gameObject.transform.parent?.name switch
-                {
-                    "Ming" => Configuration.PropertyPrices["Sweatshop"],
-                    "Donna" => Configuration.PropertyPrices["Motel Room"],
-                    _ => item.Price
-                };
-            }
         }
     }
 }

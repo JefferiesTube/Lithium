@@ -27,5 +27,17 @@
             }
             return result;
         }
+
+        public static Il2CppSystem.Collections.Generic.List<T> ToIL2CPPList<T>(this List<T>? list)
+        {
+            Il2CppSystem.Collections.Generic.List<T> result = new(list?.Count ?? 0);
+            if (list == null)
+                return result;
+            foreach (T item in list)
+            {
+                result.Add(item);
+            }
+            return result;
+        }
     }
 }

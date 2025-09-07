@@ -1,7 +1,10 @@
-﻿using Il2CppScheduleOne.Growing;
+﻿using Il2CppScheduleOne.Economy;
+using Lithium.Helper;
 using Lithium.Modules;
+using Lithium.Modules.ChemistryStation;
 using Lithium.Modules.Customers;
 using Lithium.Modules.DryingRacks;
+using Lithium.Modules.Employees;
 using Lithium.Modules.LabOven;
 using Lithium.Modules.MixingStations;
 using Lithium.Modules.PlantGrowth;
@@ -10,12 +13,14 @@ using Lithium.Modules.Shops;
 using Lithium.Modules.StackSizes;
 using Lithium.Modules.Storyline;
 using Lithium.Modules.TrashGrabber;
+using Lithium.Modules.WateringCans;
 using MelonLoader;
 using UnityEngine;
 
 [assembly: MelonInfo(typeof(Lithium.Core), "Lithium", "1.0.0", "DerTomDer & YukiSora", null)]
 [assembly: MelonGame("TVGS", "Schedule I")]
-
+[assembly: MelonPlatformDomain(MelonPlatformDomainAttribute.CompatibleDomains.IL2CPP)]
+                                                                              
 namespace Lithium
 {
     public class Core : MelonMod
@@ -32,6 +37,9 @@ namespace Lithium
             new ModMixingStations(),
             new ModStoryline(),
             new ModShops(),
+            new ModEmployees(),
+            new ModChemistryStation(),
+            new ModWateringCan()
         ];
 
         public static T Get<T>() where T : ModuleBase => Modules.OfType<T>().FirstOrDefault();
@@ -73,6 +81,15 @@ namespace Lithium
             }
         }
 
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+            if (Input.GetKeyDown(KeyCode.F5))
+            {
+                Customer c = Customer.UnlockedCustomers.ToList()[0];
+                // Singleton<DealCompletionPopup>.Instance.PlayPopup(c, 1, 0);
+            }
+        }
 
         //public static Sprite FindSprite(string spriteName)
         //{

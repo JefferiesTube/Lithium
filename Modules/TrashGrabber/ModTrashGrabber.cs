@@ -6,6 +6,7 @@
 
         public int CustomCapacity { get; set; } = 20;
     }
+
     public class ModTrashGrabber : ModuleBase<ModTrashGrabberConfiguration>
     {
         public override void Apply()

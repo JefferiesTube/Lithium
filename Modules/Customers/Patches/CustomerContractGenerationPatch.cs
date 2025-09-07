@@ -13,17 +13,17 @@ using UnityEngine;
 
 namespace Lithium.Modules.Customers.Patches
 {
-    [HarmonyPatch(typeof(Customer), nameof(Customer.CheckContractGeneration))]
+    [HarmonyPatch(typeof(Customer), nameof(Customer.TryGenerateContract))]
     public class CustomerContractGenerationPatch
     {
         [HarmonyPostfix]
-        public static void Postfix(ref ContractInfo __result, Customer __instance, bool force = false)
+        public static void Postfix(ref ContractInfo __result, Customer __instance, Dealer dealer)
         {
             ModCustomersConfiguration config = Core.Get<ModCustomers>().Configuration;
             if (!config.Enabled || !config.Contracts.Enabled)
                 return;
 
-            if (__result == null || force)
+            if (__result == null)
                 return;
 
             if (LevelManager.Instance.TotalXP < config.Contracts.XPRequired)

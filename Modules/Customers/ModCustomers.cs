@@ -3,6 +3,30 @@ using Lithium.Modules.Customers.Behaviours;
 
 namespace Lithium.Modules.Customers
 {
+    public class EffectMatchBonus
+    {
+        public float PercentageBonusMin { get; set; } = 0f;
+        public float PercentageBonusMax { get; set; } = 0f;
+        public int FixedBonusMin { get; set; } = 0;
+        public int FixedBonusMax { get; set; } = 0;
+    }
+
+    public class EffectBonus
+    {
+        public bool Enabled { get; set; }
+        public bool AffectsDealers { get; set; } = true;
+        public EffectMatchBonus OneCoveredEffect { get; set; } = new();
+        public EffectMatchBonus TwoCoveredEffects { get; set; } = new();
+        public EffectMatchBonus ThreeCoveredEffects { get; set; } = new();
+    }
+
+    public class QualityBonus
+    {
+        public bool Enabled { get; set; }
+        public bool AffectsDealers { get; set; } = true;
+        public float BonusPercentage { get; set; }
+    }
+
     public class SampleOffering
     {
         public bool Enabled { get; set; }
@@ -39,6 +63,8 @@ namespace Lithium.Modules.Customers
         public override string Name => "Customers";
         public SampleOffering SampleOffering { get; set; } = new SampleOffering();
         public Contracts Contracts { get; set; } = new Contracts();
+        public QualityBonus QualityBonus { get; set; } = new QualityBonus();
+        public EffectBonus EffectBonus { get; set; } = new EffectBonus();
     }
 
     public class ModCustomers : ModuleBase<ModCustomersConfiguration>
