@@ -43,7 +43,7 @@ namespace Lithium.Modules.EffectCombos.BonusPayments
 
                     float itemBonus = fixedPart + percentPart;
 
-                    boni.Add(new($"{combo.Name} Combo Bonus", itemBonus));
+                    boni.Add(new($"\"{combo.Name}\" Combo Bonus", itemBonus));
                 }
             }
 
